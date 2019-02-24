@@ -64,15 +64,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
 
     // Search UI
     $html .= '<form id="au-search-form">
-      <label>Min Tank size</label>
-      <label>Care Level</label>
-      <label>Temperament</label>
-      <label>Diet</label>
-      <label>Max Size</label>
-      <label>Placement</label>
-      <label>Reef Compatible</label>
-      <label>Plant Safe</label>
-
+      <div id="au-search-fields"></div>
       <button type="submit">Search</button>
       <button id="reset-au-search-results" type="button">Reset</button>
     </form>';
@@ -82,8 +74,8 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     foreach ( $terms as $term ):
       $theID = $term->term_id;
       $html .= '<li>';
-        $html .= '<a href="#" class="livestock-thumbnail catSelector" data-catid="' . $theID . '">';
-          $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" alt="' . $term->name . '" . />';
+        $html .= '<a href="#" class="catSelector" data-catid="' . $theID . '">';
+          $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" class="livestock-thumbnail" alt="' . $term->name . '" . />';
           $html .= '<span class="livestock-title">' . $term->name . '</span>';
         $html .= '</a>';
       $html .= '</li>';

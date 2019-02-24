@@ -2,6 +2,7 @@
   const loading = document.getElementById('loading')
   const catSelectors = document.getElementsByClassName('catSelector')
   const form = document.getElementById('au-search-form')
+  const fields = document.getElementById('au-search-fields')
   const resultsList = document.getElementById('au-search-results')
   const initialCats = resultsList.innerHTML
   const resetButton = document.getElementById('reset-au-search-results')
