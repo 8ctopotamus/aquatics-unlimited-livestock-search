@@ -36,7 +36,8 @@
       resultsList.innerHTML = ''
       json.forEach(obj => renderTemplate(obj))
     } else {
-      results.innerHTML = '<li>No matches found.</li>'
+      form.style.display = 'block'
+      resultsList.innerHTML = '<li>No matches found.</li>'
     }
   }
 
@@ -67,6 +68,7 @@
         body: form_data
       })
       const json = await response.json()
+      console.log(json)
       renderResults(json)
     } catch (err) {
       throw new Error(err)

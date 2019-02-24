@@ -64,6 +64,15 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
 
     // Search UI
     $html .= '<form id="au-search-form">
+      <label>Min Tank size</label>
+      <label>Care Level</label>
+      <label>Temperament</label>
+      <label>Diet</label>
+      <label>Max Size</label>
+      <label>Placement</label>
+      <label>Reef Compatible</label>
+      <label>Plant Safe</label>
+
       <button type="submit">Search</button>
       <button id="reset-au-search-results" type="button">Reset</button>
     </form>';
