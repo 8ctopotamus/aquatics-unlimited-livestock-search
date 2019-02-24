@@ -21,7 +21,7 @@ $query = new WP_Query( $args );
 $results = [];
 while ( $query->have_posts() ) : $query->the_post();
   $attachment_id = get_field('main_photo');
-  $size = "livestock-thumb";
+  $size = "medium"; // livestock-thumb
   $mainImageACF = wp_get_attachment_image_src( $attachment_id, $size )[0];
   $thumbnail = !is_null($mainImageACF) ?
                $mainImageACF :

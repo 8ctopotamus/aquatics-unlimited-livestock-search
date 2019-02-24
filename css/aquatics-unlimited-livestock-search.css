@@ -205,6 +205,11 @@ ul.livestock-grid > li > a:hover img {
           transform: scale(1.1);
 }
 
+/* Search Form */
+#au-search-form {
+  display: none;
+}
+
 @media only screen and (max-width: 767px) { /* Go to two columns */
   ul.livestock-grid {
     grid-template-columns: repeat(2, 1fr);

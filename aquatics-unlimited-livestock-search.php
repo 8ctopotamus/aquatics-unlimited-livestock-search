@@ -44,7 +44,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
   wp_enqueue_script($pluginSlug . '-js');
 
   //show all top level livestock_categories terms
-  $catsArray = array(18,15,19,88,87,16,17);
+  $catsArray = array(18, 15, 19, 88, 87, 16, 17);
   $args = [
     'taxonomy' => 'livestock_categories',
     'exclude' => array( 104 ),
@@ -63,19 +63,21 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     $html .= '</div>';
 
     // Search UI
-    $html .= '<form id="au-search">
+    $html .= '<form id="au-search-form">
       <button type="submit">Search</button>
+      <button id="reset-au-search-results" type="button">Reset</button>
     </form>';
-    $html .= '<button id="reset-au-search-results" type="button">Clear</button>';
 
-    // Results
+    // Initial Categories / Results
     $html .= '<ul id="au-search-results" class="livestock-grid">';
     foreach ( $terms as $term ):
       $theID = $term->term_id;
-      $html .= '<a href="'. site_url() . '/livestock-category/?cat='. $theID . '">';
-        // $html .= '<img src="do_shortcode(sprintf("[wp_custom_image_category term_id="%s" size="parent-category" onlysrc="true"]", $theID));" alt="' . $term->name '" . />';
-        $html .= '<span>' . $term->name . '</span>';
-      $html .= '</a>';
+      $html .= '<li>';
+        $html .= '<a href="#" class="livestock-thumbnail catSelector" data-catid="' . $theID . '">';
+          $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" alt="' . $term->name . '" . />';
+          $html .= '<span class="livestock-title">' . $term->name . '</span>';
+        $html .= '</a>';
+      $html .= '</li>';
     endforeach;
     $html .= '</ul>';
 
