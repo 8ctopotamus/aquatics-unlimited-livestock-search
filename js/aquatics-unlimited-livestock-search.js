@@ -1,7 +1,10 @@
 (function() {
+  let paged = 0
+  let cat = false
+
   const loading = document.getElementById('loading')
   const catSelectors = document.getElementsByClassName('catSelector')
-  const form = document.getElementById('au-search-form')
+  const searchForm = document.getElementById('au-search-form')
   const fields = document.getElementById('au-search-fields')
   const resultsList = document.getElementById('au-search-results')
   const initialCats = resultsList.innerHTML
@@ -16,9 +19,11 @@
   }
 
   function resetResults() {
+    paged = 0
+    cat = false
     resultsList.innerHTML = initialCats
     Object.values(catSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
-    form.style.display = 'none'
+    searchForm.style.display = 'none'
   }
 
   function renderTemplate(obj) {
@@ -31,18 +36,18 @@
   }
 
   function renderResults(json) {
-    if (json.length > 0) {
+    if (json.data.length > 0) {
       Object.values(catSelectors).forEach(cat => cat.removeEventListener('click', searchCategory))
-      form.style.display = 'block'
+      searchForm.style.display = 'block'
       resultsList.innerHTML = ''
-      json.forEach(obj => renderTemplate(obj))
+      json.data.forEach(obj => renderTemplate(obj))
     } else {
-      form.style.display = 'block'
-      resultsList.innerHTML = '<li>No matches found.</li>'
+      searchForm.style.display = 'block' // to show reset button
+      resultsList.innerHTML = `<li>${json.total} matches found.</li>`
     }
   }
 
-  async function handleFormSubmit(e) {
+  async function searchFormSubmit(e) {
     e.preventDefault()
     showLoading()
     console.log('form submit')
@@ -54,10 +59,13 @@
     showLoading()
     const target = e.target
     const a = target.tagName === 'A' ? target : target.parentNode
-    const catId = a.dataset.catid
+    if (a.dataset.catid) {
+      cat = a.dataset.catid
+    }
     const data = {
       action: 'au_fetch_livestock',
-      cat: catId
+      cat: cat,
+      paged: paged
     }
     let form_data = new FormData()
     for (key in data) {
@@ -69,7 +77,6 @@
         body: form_data
       })
       const json = await response.json()
-      console.log(json)
       renderResults(json)
     } catch (err) {
       throw new Error(err)
@@ -77,7 +84,7 @@
     hideLoading()
   }
 
-  form.addEventListener('submit', handleFormSubmit)
+  searchForm.addEventListener('submit', searchFormSubmit)
   Object.values(catSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
   resetButton.addEventListener('click', resetResults)
   hideLoading()

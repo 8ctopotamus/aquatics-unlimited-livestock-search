@@ -12,8 +12,10 @@ $fieldsWeCareAbout = [
   'plant_safe'
 ];
 
-$cat = !empty($_POST['cat']) ? $_POST['cat'] : NULL;
-$placeholderImgUrl = site_url() . '/wp-content/uploads/2017/11/featured-default-150x150.jpg';
+$placeholderImgUrl = plugins_url('/img/placeholder.jpg',  __DIR__ );
+
+$cat = !empty($_POST['cat']) ? $_POST['cat'] : false;
+$paged = !empty($_POST['paged']) ? $_POST['paged'] : 0;
 
 function filterACFFields($key) {
   global $fieldsWeCareAbout;
@@ -22,18 +24,23 @@ function filterACFFields($key) {
 
 $args = array(
   'post_type' => 'livestock',
-  // 'posts_per_page' => '-1',
+  'posts_per_page' => '12',
+  'paged' => $paged,
   'orderby' => 'title',
   'order' => 'ASC',
-  'tax_query' => array(
+);
+
+if ($cat):
+  $args['tax_query'] = array(
     array (
       'taxonomy' => 'livestock_categories',
       'terms' => $cat,
     )
-  )
-);
+  );
+endif;
 
 $query = new WP_Query( $args );
+
 $results = [];
 
 if ( $query->have_posts() ):
@@ -45,7 +52,7 @@ if ( $query->have_posts() ):
                  $mainImageACF :
                  $placeholderImgUrl;
     $acfFields = array_filter( get_fields(get_the_id()), 'filterACFFields', ARRAY_FILTER_USE_KEY );
-    $results[] = [
+    $results['data'][] = [
       'title' => get_the_title(),
       'permalink' => get_the_permalink(),
       'thumbnail' => $thumbnail,
@@ -54,6 +61,8 @@ if ( $query->have_posts() ):
     wp_reset_postdata();
   endwhile;
 endif;
+
+$results['total'] = $query->found_posts;
 
 echo json_encode($results);
 wp_die();

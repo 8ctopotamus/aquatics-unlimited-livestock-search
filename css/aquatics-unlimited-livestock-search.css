@@ -1,3 +1,7 @@
+:root {
+  --au-dark-blue: #2373a6;
+}
+
 #aquatics-unlimited-livestock-search {
   position: relative;
 }
@@ -177,7 +181,7 @@ ul.livestock-grid > li > a {
 ul.livestock-grid img.livestock-thumbnail {
   display: block;
   position: absolute;
-  top: -30px;
+  top: 0;
   left: 0;
   bottom: 0;
   right: 0;
@@ -207,6 +211,10 @@ ul.livestock-grid a .livestock-title {
   color: #2373a6;
 }
 
+ul.livestock-grid > li > a:hover {
+  box-shadow: 0px 0px 12px var(--au-dark-blue);
+}
+
 ul.livestock-grid > li > a:hover img {
   -webkit-transform: scale(1.1);
       -ms-transform: scale(1.1);
@@ -216,6 +224,8 @@ ul.livestock-grid > li > a:hover img {
 /* Search Form */
 #au-search-form {
   display: none;
+  margin-bottom: 25px;
+  background: var(--au-darkblue);
 }
 
 @media only screen and (max-width: 767px) { /* Go to two columns */

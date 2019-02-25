@@ -40,7 +40,10 @@ add_action('wp_enqueue_scripts', 'aquatics_ulimited_livestock_search_scripts_sty
 function aquatics_unlimited_livestock_search_func( $atts ) {
   global $pluginSlug;
   wp_enqueue_style($pluginSlug . '-css');
-  wp_localize_script( $pluginSlug . '-js', 'wp_data', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ));
+  wp_localize_script( $pluginSlug . '-js', 'wp_data', array(
+    'ajax_url' => admin_url( 'admin-ajax.php' ),
+    'plugin_slug' => $pluginSlug
+  ));
   wp_enqueue_script($pluginSlug . '-js');
 
   //show all top level livestock_categories terms
@@ -69,13 +72,23 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
       <button id="reset-au-search-results" type="button">Reset</button>
     </form>';
 
-    // Initial Categories / Results
+    // Results grid
     $html .= '<ul id="au-search-results" class="livestock-grid">';
+
+    // All categories
+    $html .= '<li>';
+      $html .= '<a href="#" class="catSelector">';
+        $html .= '<img src="' . plugins_url('/img/all-category.jpg',  __FILE__ ) . '" class="livestock-thumbnail" alt="All Categories" />';
+        $html .= '<span class="livestock-title">All Categories</span>';
+      $html .= '</a>';
+    $html .= '</li>';
+
+    // Initial Cats
     foreach ( $terms as $term ):
       $theID = $term->term_id;
       $html .= '<li>';
         $html .= '<a href="#" class="catSelector" data-catid="' . $theID . '">';
-          $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" class="livestock-thumbnail" alt="' . $term->name . '" . />';
+          $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" class="livestock-thumbnail" alt="' . $term->name . '" />';
           $html .= '<span class="livestock-title">' . $term->name . '</span>';
         $html .= '</a>';
       $html .= '</li>';
