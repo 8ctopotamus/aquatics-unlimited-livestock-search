@@ -12,6 +12,18 @@
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
+global $fieldsWeCareAbout;
+$fieldsWeCareAbout = [
+  'minimum_tank_size',
+  'care_level',
+  'temperament',
+  'diet',
+  'max_size',
+  'placement',
+  'reef_compatible',
+  'plant_safe'
+];
+
 $pluginSlug = 'aquatics-unlimited-livestock-search';
 
 /*
@@ -30,7 +42,7 @@ function au_fetch_livestock() {
 function aquatics_ulimited_livestock_search_scripts_styles() {
   global $pluginSlug;
   wp_register_style( $pluginSlug . '-css', plugins_url('/css/' . $pluginSlug . '.css',  __FILE__ ));
-  wp_register_script( $pluginSlug . '-js', plugins_url('/js/' . $pluginSlug . '.js',  __FILE__ ), array('jquery'), false, true );
+  wp_register_script( $pluginSlug . '-js', plugins_url('/js/' . $pluginSlug . '.js',  __FILE__ ), '', false, true );
 }
 add_action('wp_enqueue_scripts', 'aquatics_ulimited_livestock_search_scripts_styles');
 
@@ -39,6 +51,8 @@ add_action('wp_enqueue_scripts', 'aquatics_ulimited_livestock_search_scripts_sty
 */
 function aquatics_unlimited_livestock_search_func( $atts ) {
   global $pluginSlug;
+  global $fieldsWeCareAbout;
+
   wp_enqueue_style($pluginSlug . '-css');
   wp_localize_script( $pluginSlug . '-js', 'wp_data', array(
     'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -61,16 +75,33 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
 
   $html = '<div id="' . $pluginSlug . '">';
     // loading
-    $html .= '<div id="loading" class="pixel-spinner">';
-      $html .= '<div class="pixel-spinner-inner"></div>';
-    $html .= '</div>';
+    $html .= '<div id="loading" class="progress-line"></div>';
 
     // Search UI
-    $html .= '<form id="au-search-form">
-      <div id="au-search-fields"></div>
-      <button type="submit">Search</button>
-      <button id="reset-au-search-results" type="button">Reset</button>
-    </form>';
+    $html .= '<form id="au-search-form">';
+      $html .= '<div class="au-search-form-fields">';
+        // Render fields from ACF group
+        $fields = acf_get_fields(53);
+        foreach ($fields as $field):
+          $name = $field['name'];
+          $label = $field['label'];
+          $choices = $field['choices'];
+          if ( !in_array( $name, $fieldsWeCareAbout ) ):
+            continue;
+          endif;
+          $html .= '<div>';
+          $html .= '<label for="' . $name . '">' . $label . '</label>';
+          $html .= '<select name="' . $name . '">';
+            foreach ($choices as $choice):
+              $html .= '<option value="' . $choice . '">' . $choice . '</option>';
+            endforeach;
+          $html .= '</select>';
+          $html .= '</div>';
+        endforeach;
+      $html .= '</div>';
+      $html .= '<button type="submit">Search</button>';
+      $html .= '<button id="reset-au-search-results" type="button">Reset</button>';
+    $html .= '</form>';
 
     // Results grid
     $html .= '<ul id="au-search-results" class="livestock-grid">';

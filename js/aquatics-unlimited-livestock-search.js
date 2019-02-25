@@ -1,17 +1,17 @@
 (function() {
-  let paged = 0
-  let cat = false
-
   const loading = document.getElementById('loading')
   const catSelectors = document.getElementsByClassName('catSelector')
   const searchForm = document.getElementById('au-search-form')
-  const fields = document.getElementById('au-search-fields')
   const resultsList = document.getElementById('au-search-results')
   const initialCats = resultsList.innerHTML
   const resetButton = document.getElementById('reset-au-search-results')
 
+  let postsPerPage = 12
+  let paged = 0
+  let cat = false
+
   function showLoading() {
-    loading.style.display = 'block'
+    loading.style.display = 'flex'
   }
 
   function hideLoading() {
@@ -47,6 +47,10 @@
     }
   }
 
+  function renderFields(data) {
+    console.log(data)
+  }
+
   async function searchFormSubmit(e) {
     e.preventDefault()
     showLoading()
@@ -64,8 +68,9 @@
     }
     const data = {
       action: 'au_fetch_livestock',
-      cat: cat,
-      paged: paged
+      cat,
+      postsPerPage,
+      paged
     }
     let form_data = new FormData()
     for (key in data) {
@@ -77,6 +82,7 @@
         body: form_data
       })
       const json = await response.json()
+      renderFields(json.data)
       renderResults(json)
     } catch (err) {
       throw new Error(err)
@@ -85,7 +91,8 @@
   }
 
   searchForm.addEventListener('submit', searchFormSubmit)
-  Object.values(catSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
   resetButton.addEventListener('click', resetResults)
+  Object.values(catSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
+
   hideLoading()
 })()

@@ -2,156 +2,54 @@
   --au-dark-blue: #2373a6;
 }
 
+.progress-line, .progress-line:before {
+  height: 3px;
+  width: 100%;
+  margin: 0;
+}
+.progress-line {
+  background-color: #b3d4fc;
+  display: -webkit-flex;
+  display: flex;
+}
+.progress-line:before {
+  background-color: var(--au-dark-blue);
+  content: '';
+  -webkit-animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@-webkit-keyframes running-progress {
+  0% { margin-left: 0px; margin-right: 100%; }
+  50% { margin-left: 25%; margin-right: 0%; }
+  100% { margin-left: 100%; margin-right: 0; }
+}
+@keyframes running-progress {
+  0% { margin-left: 0px; margin-right: 100%; }
+  50% { margin-left: 25%; margin-right: 0%; }
+  100% { margin-left: 100%; margin-right: 0; }
+}
+
 #aquatics-unlimited-livestock-search {
   position: relative;
 }
 
-/* Spinner */
-.pixel-spinner {
-  margin: auto;
-  position: absolute;
-  z-index: 10;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+#au-search-form {
+  display: none;
+  margin-bottom: 25px;
 }
 
-.pixel-spinner, .pixel-spinner * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-.pixel-spinner {
-  height: 70px;
-  width: 70px;
-  display: -webkit-box;
-  display: -ms-flexbox;
+.au-search-form-fields {
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: space-around;
+  align-items: flex-start;
+  background: var(--au-dark-blue);
+  padding: 12px;
 }
 
-.pixel-spinner .pixel-spinner-inner {
-  width: calc(70px / 7);
-  height: calc(70px / 7);
-  background-color: #54317e;
-  color: #54317e;
-  -webkit-box-shadow: 15px 15px  0 0,
-              -15px -15px  0 0,
-              15px -15px  0 0,
-              -15px 15px  0 0,
-              0 15px  0 0,
-              15px 0  0 0,
-              -15px 0  0 0,
-              0 -15px 0 0;
-          box-shadow: 15px 15px  0 0,
-              -15px -15px  0 0,
-              15px -15px  0 0,
-              -15px 15px  0 0,
-              0 15px  0 0,
-              15px 0  0 0,
-              -15px 0  0 0,
-              0 -15px 0 0;
-  -webkit-animation: pixel-spinner-animation 2000ms linear infinite;
-          animation: pixel-spinner-animation 2000ms linear infinite;
+.au-search-form-fields label {
+  color: white;
 }
 
-@-webkit-keyframes pixel-spinner-animation {
-  50% {
-    -webkit-box-shadow: 20px 20px 0px 0px,
-                -20px -20px 0px 0px,
-                20px -20px 0px 0px,
-                -20px 20px 0px 0px,
-                0px 10px 0px 0px,
-                10px 0px 0px 0px,
-                -10px 0px 0px 0px,
-                0px -10px 0px 0px;
-            box-shadow: 20px 20px 0px 0px,
-                -20px -20px 0px 0px,
-                20px -20px 0px 0px,
-                -20px 20px 0px 0px,
-                0px 10px 0px 0px,
-                10px 0px 0px 0px,
-                -10px 0px 0px 0px,
-                0px -10px 0px 0px;
-  }
-  75% {
-    -webkit-box-shadow: 20px 20px 0px 0px,
-                -20px -20px 0px 0px,
-                20px -20px 0px 0px,
-                -20px 20px 0px 0px,
-                0px 10px 0px 0px,
-                10px 0px 0px 0px,
-                -10px 0px 0px 0px,
-                0px -10px 0px 0px;
-            box-shadow: 20px 20px 0px 0px,
-                -20px -20px 0px 0px,
-                20px -20px 0px 0px,
-                -20px 20px 0px 0px,
-                0px 10px 0px 0px,
-                10px 0px 0px 0px,
-                -10px 0px 0px 0px,
-                0px -10px 0px 0px;
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@keyframes pixel-spinner-animation {
-  50% {
-    -webkit-box-shadow: 20px 20px 0px 0px,
-                -20px -20px 0px 0px,
-                20px -20px 0px 0px,
-                -20px 20px 0px 0px,
-                0px 10px 0px 0px,
-                10px 0px 0px 0px,
-                -10px 0px 0px 0px,
-                0px -10px 0px 0px;
-            box-shadow: 20px 20px 0px 0px,
-                -20px -20px 0px 0px,
-                20px -20px 0px 0px,
-                -20px 20px 0px 0px,
-                0px 10px 0px 0px,
-                10px 0px 0px 0px,
-                -10px 0px 0px 0px,
-                0px -10px 0px 0px;
-  }
-  75% {
-    -webkit-box-shadow: 20px 20px 0px 0px,
-                -20px -20px 0px 0px,
-                20px -20px 0px 0px,
-                -20px 20px 0px 0px,
-                0px 10px 0px 0px,
-                10px 0px 0px 0px,
-                -10px 0px 0px 0px,
-                0px -10px 0px 0px;
-            box-shadow: 20px 20px 0px 0px,
-                -20px -20px 0px 0px,
-                20px -20px 0px 0px,
-                -20px 20px 0px 0px,
-                0px 10px 0px 0px,
-                10px 0px 0px 0px,
-                -10px 0px 0px 0px,
-                0px -10px 0px 0px;
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-/* Livestock Grid */
 ul.livestock-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -219,13 +117,6 @@ ul.livestock-grid > li > a:hover img {
   -webkit-transform: scale(1.1);
       -ms-transform: scale(1.1);
           transform: scale(1.1);
-}
-
-/* Search Form */
-#au-search-form {
-  display: none;
-  margin-bottom: 25px;
-  background: var(--au-darkblue);
 }
 
 @media only screen and (max-width: 767px) { /* Go to two columns */

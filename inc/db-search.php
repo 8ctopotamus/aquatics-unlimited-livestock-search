@@ -1,20 +1,9 @@
 <?php
 
-global $fieldsWeCareAbout;
-$fieldsWeCareAbout = [
-  'minimum_tank_size',
-  'care_level',
-  'temperament',
-  'diet',
-  'max_size',
-  'placement',
-  'reef_compatible',
-  'plant_safe'
-];
-
 $placeholderImgUrl = plugins_url('/img/placeholder.jpg',  __DIR__ );
 
 $cat = !empty($_POST['cat']) ? $_POST['cat'] : false;
+$postsPerPage = !empty($_POST['postsPerPage']) ? $_POST['postsPerPage'] : 12;
 $paged = !empty($_POST['paged']) ? $_POST['paged'] : 0;
 
 function filterACFFields($key) {
@@ -24,12 +13,11 @@ function filterACFFields($key) {
 
 $args = array(
   'post_type' => 'livestock',
-  'posts_per_page' => '12',
+  'posts_per_page' => $postsPerPage,
   'paged' => $paged,
   'orderby' => 'title',
   'order' => 'ASC',
 );
-
 if ($cat):
   $args['tax_query'] = array(
     array (
@@ -45,13 +33,13 @@ $results = [];
 
 if ( $query->have_posts() ):
   while ( $query->have_posts() ) : $query->the_post();
+    $acfFields = array_filter( get_fields( get_the_id() ), 'filterACFFields', ARRAY_FILTER_USE_KEY );
     $attachment_id = get_field('main_photo');
-    $size = "medium"; // livestock-thumb
+    $size = "medium";
     $mainImageACF = wp_get_attachment_image_src( $attachment_id, $size )[0];
     $thumbnail = !is_null($mainImageACF) ?
                  $mainImageACF :
                  $placeholderImgUrl;
-    $acfFields = array_filter( get_fields(get_the_id()), 'filterACFFields', ARRAY_FILTER_USE_KEY );
     $results['data'][] = [
       'title' => get_the_title(),
       'permalink' => get_the_permalink(),
