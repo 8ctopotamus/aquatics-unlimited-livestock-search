@@ -12,6 +12,7 @@
   let paged = 0
   let cat = false
   let catName = ''
+  let debug = false
 
   const showLoading = () => {
     loading.classList.add('loading-shown')
@@ -41,7 +42,7 @@
     hideSearchIU()
   }
 
-  const renderTemplate = obj => {
+  const renderThumbnail = obj => {
     resultsList.innerHTML += `<li>
       <a href="${obj.permalink}">
         <img class="livestock-thumbnail" src="${obj.thumbnail}" alt="${obj.title}" />
@@ -51,13 +52,15 @@
   }
 
   const renderResults = json => {
-    console.log(json)
-    const { data, total } = json
+    const { data, total, debug } = json
     resultsStats.innerHTML = `<h2>${catName} <small>${total} matches found.</small></h2>`
     resultsList.innerHTML = ''
     if (data.length > 0) {
       Object.values(initialCatsSelectors).forEach(cat => cat.removeEventListener('click', searchCategory))
-      data.forEach(obj => renderTemplate(obj))
+      data.forEach(obj => renderThumbnail(obj))
+    }
+    if (debug) {
+      console.info('Debug', debug)
     }
     showSearchUI()
   }
@@ -72,6 +75,7 @@
       cat,
       postsPerPage,
       paged,
+      debug,
     }
     for (key in data) {
       form_data.append(key, data[key])
@@ -105,7 +109,8 @@
       action: 'au_fetch_livestock',
       cat,
       postsPerPage,
-      paged
+      paged,
+      debug
     }
     let form_data = new FormData()
     for (key in data) {

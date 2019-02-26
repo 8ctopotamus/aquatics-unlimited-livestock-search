@@ -3,7 +3,7 @@
 function aquatics_unlimited_livestock_search_func( $atts ) {
   global $pluginSlug;
   global $fieldsWeCareAbout;
-  
+
   wp_enqueue_style($pluginSlug . '-css');
   wp_localize_script( $pluginSlug . '-js', 'wp_data', array(
     'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -55,7 +55,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     // Results stats
     $html .= '<div id="results-stats-container">';
       $html .= '<div id="results-stats"></div>';
-      $html .= '<button id="reset-au-search-results" type="button">Reset</button>';
+      $html .= '<button id="reset-au-search-results" type="button">🔄 Reset</button>';
     $html .= '</div>';
 
     // Results grid

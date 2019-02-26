@@ -3,9 +3,10 @@
 global $fieldsWeCareAbout;
 
 $cat = !empty($_POST['cat']) ? $_POST['cat'] : false;
-$postsPerPage = !empty($_POST['postsPerPage']) ? $_POST['postsPerPage'] : 12;
-$paged = !empty($_POST['paged']) ? $_POST['paged'] : 0;
-$includeMeta = !empty($_POST['includeMeta']) ? $_POST['includeMeta'] : false;
+$postsPerPage = !empty($_POST['postsPerPage']) ? intval($_POST['postsPerPage']) : 12;
+$paged = !empty($_POST['paged']) ? intval($_POST['paged']) : 0;
+$includeMeta = $_POST['includeMeta'] === 'true' ? boolval($_POST['includeMeta']) : false;
+$debug = $_POST['debug'] === 'true' ? boolval($_POST['debug']) : false;
 
 $placeholderImgUrl = plugins_url('/img/placeholder.jpg',  __DIR__ );
 
@@ -50,8 +51,6 @@ if ($includeMeta):
   endforeach;
 endif;
 
-$results['args'] = $args; // show in json response for debugging
-
 $query = new WP_Query( $args );
 
 if ( $query->have_posts() ):
@@ -74,6 +73,14 @@ if ( $query->have_posts() ):
 endif;
 
 $results['total'] = $query->found_posts;
+
+// log debug WP_Query info in json response
+if ($debug):
+  $results['debug'] = [
+    '$debug' => $debug,
+    'WP_Query' => $args
+  ];
+endif;
 
 echo json_encode($results);
 wp_die();
