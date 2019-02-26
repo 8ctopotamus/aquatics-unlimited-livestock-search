@@ -12,7 +12,8 @@
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-global $fieldsWeCareAbout;
+$pluginSlug = 'aquatics-unlimited-livestock-search';
+
 $fieldsWeCareAbout = [
   'minimum_tank_size',
   'care_level',
@@ -24,7 +25,7 @@ $fieldsWeCareAbout = [
   'plant_safe'
 ];
 
-$pluginSlug = 'aquatics-unlimited-livestock-search';
+$catsArray = array(18, 15, 19, 88, 87, 16, 17);
 
 /*
 ** Set up wp_ajax requests for frontend UI.
@@ -33,7 +34,7 @@ $pluginSlug = 'aquatics-unlimited-livestock-search';
 add_action( 'wp_ajax_au_fetch_livestock', 'au_fetch_livestock' );
 add_action( 'wp_ajax_nopriv_au_fetch_livestock', 'au_fetch_livestock' );
 function au_fetch_livestock() {
-  include( plugin_dir_path( __FILE__ ) . 'inc/db-search.php' );
+  include( plugin_dir_path( __FILE__ ) . 'inc/search.php' );
 }
 
 /*
@@ -41,99 +42,14 @@ function au_fetch_livestock() {
 */
 function aquatics_ulimited_livestock_search_scripts_styles() {
   global $pluginSlug;
-  wp_register_style( $pluginSlug . '-css', plugins_url('/css/' . $pluginSlug . '.css',  __FILE__ ));
-  wp_register_script( $pluginSlug . '-js', plugins_url('/js/' . $pluginSlug . '.js',  __FILE__ ), '', false, true );
+  wp_register_style( $pluginSlug . '-css', plugins_url('/css/styles.css',  __FILE__ ));
+  wp_register_script( $pluginSlug . '-js', plugins_url('/js/app.js',  __FILE__ ), '', false, true );
 }
 add_action('wp_enqueue_scripts', 'aquatics_ulimited_livestock_search_scripts_styles');
 
 /*
 ** Shortcode
 */
-function aquatics_unlimited_livestock_search_func( $atts ) {
-  global $pluginSlug;
-  global $fieldsWeCareAbout;
-
-  wp_enqueue_style($pluginSlug . '-css');
-  wp_localize_script( $pluginSlug . '-js', 'wp_data', array(
-    'ajax_url' => admin_url( 'admin-ajax.php' ),
-    'plugin_slug' => $pluginSlug
-  ));
-  wp_enqueue_script($pluginSlug . '-js');
-
-  //show all top level livestock_categories terms
-  $catsArray = array(18, 15, 19, 88, 87, 16, 17);
-  $args = [
-    'taxonomy' => 'livestock_categories',
-    'exclude' => array( 104 ),
-    'parent' => 0,
-    'number' => 10,
-    'include' => $catsArray,
-    'hide_empty' => false,
-    'orderby' => 'include',
-  ];
-  $terms = get_terms( $args );
-
-  $html = '<div id="' . $pluginSlug . '">';
-    // loading
-    $html .= '<div id="loading" class="progress-line"></div>';
-
-    // Search UI
-    $html .= '<form id="au-search-form">';
-      $html .= '<div class="au-search-form-fields">';
-        // Render fields from ACF group
-        $fields = acf_get_fields(53);
-        foreach ($fields as $field):
-          $name = $field['name'];
-          $label = $field['label'];
-          $choices = $field['choices'];
-          if ( !in_array( $name, $fieldsWeCareAbout ) ):
-            continue;
-          endif;
-          $html .= '<div>';
-          $html .= '<label for="' . $name . '">' . $label . '</label>';
-          $html .= '<select name="' . $name . '">';
-            foreach ($choices as $choice):
-              $html .= '<option value="' . $choice . '">' . $choice . '</option>';
-            endforeach;
-          $html .= '</select>';
-          $html .= '</div>';
-        endforeach;
-      $html .= '</div>';
-      $html .= '<button type="submit">Search</button>';
-    $html .= '</form>';
-
-    // Results stats
-    $html .= '<div id="results-stats-container">';
-      $html .= '<div id="results-stats"></div>';
-      $html .= '<button id="reset-au-search-results" type="button">Reset</button>';
-    $html .= '</div>';
-
-    // Results grid
-    $html .= '<ul id="au-search-results-grid" class="livestock-grid">';
-
-    // All categories
-    $html .= '<li>';
-      $html .= '<a href="#" data-catname="All Livestock" class="catSelector">';
-        $html .= '<img src="' . plugins_url('/img/all-category.jpg',  __FILE__ ) . '" class="livestock-thumbnail" alt="All Categories" />';
-        $html .= '<span class="livestock-title">All Livestock</span>';
-      $html .= '</a>';
-    $html .= '</li>';
-
-    // Initial Cats
-    foreach ( $terms as $term ):
-      $theID = $term->term_id;
-      $html .= '<li>';
-        $html .= '<a href="#" class="catSelector" data-catid="' . $theID . '" data-catname="' . $term->name . '">';
-          $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" class="livestock-thumbnail" alt="' . $term->name . '" />';
-          $html .= '<span class="livestock-title">' . $term->name . '</span>';
-        $html .= '</a>';
-      $html .= '</li>';
-    endforeach;
-    $html .= '</ul>';
-
-  $html .= '</div>';
-  return $html;
-}
-add_shortcode( $pluginSlug, 'aquatics_unlimited_livestock_search_func' );
+include 'inc/shortcode.php';
 
 ?>
