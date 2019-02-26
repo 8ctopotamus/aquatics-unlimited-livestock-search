@@ -1,13 +1,20 @@
 <?php
 
+global $fieldsWeCareAbout;
+
 $cat = !empty($_POST['cat']) ? $_POST['cat'] : false;
 $postsPerPage = !empty($_POST['postsPerPage']) ? $_POST['postsPerPage'] : 12;
 $paged = !empty($_POST['paged']) ? $_POST['paged'] : 0;
+$includeMeta = !empty($_POST['includeMeta']) ? $_POST['includeMeta'] : false;
 
 $placeholderImgUrl = plugins_url('/img/placeholder.jpg',  __DIR__ );
 
+$results = [
+  'data' => [],
+  'total' => 0
+];
+
 function filterACFFields($key) {
-  global $fieldsWeCareAbout;
   return in_array( $key, $fieldsWeCareAbout );
 }
 
@@ -28,12 +35,24 @@ if ($cat):
   );
 endif;
 
-$query = new WP_Query( $args );
+if ($includeMeta):
+  $args['meta_query']	= array(
+    'relation'		=> 'AND',
+  );
+  foreach ($fieldsWeCareAbout as $field):
+    if ($_POST[$field]):
+      $args['meta_query'][] = [
+        'key' => $field,
+        'value' => $_POST[$field],
+        'compare' => 'LIKE'
+      ];
+    endif;
+  endforeach;
+endif;
 
-$results = [
-  'data' => [],
-  'total' => 0
-];
+$results['args'] = $args; // show in json response for debugging
+
+$query = new WP_Query( $args );
 
 if ( $query->have_posts() ):
   while ( $query->have_posts() ) : $query->the_post();

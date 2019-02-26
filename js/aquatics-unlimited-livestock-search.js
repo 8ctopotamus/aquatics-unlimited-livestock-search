@@ -51,6 +51,7 @@
   }
 
   const renderResults = json => {
+    console.log(json)
     const { data, total } = json
     resultsStats.innerHTML = `<h2>${catName} <small>${total} matches found.</small></h2>`
     resultsList.innerHTML = ''
@@ -64,7 +65,28 @@
   const searchFormSubmit = async (e) => {
     e.preventDefault()
     showLoading()
-    console.log('form submit')
+    let form_data = new FormData(searchForm)
+    const data = {
+      action: 'au_fetch_livestock',
+      includeMeta: true,
+      cat,
+      postsPerPage,
+      paged,
+    }
+    for (key in data) {
+      form_data.append(key, data[key])
+    }
+    try {
+      const response = await fetch(wp_data.ajax_url, {
+        method: 'POST',
+        body: form_data
+      })
+      const json = await response.json()
+      renderResults(json)
+    } catch (err) {
+      alert(`😵 ${err}`)
+      throw new Error(err)
+    }
     hideLoading()
   }
 
