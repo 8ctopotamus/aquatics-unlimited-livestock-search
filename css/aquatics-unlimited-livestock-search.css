@@ -7,22 +7,31 @@
   width: 100%;
   margin: 0;
 }
+
 .progress-line {
   background-color: #b3d4fc;
-  display: -webkit-flex;
+  display: none;
+}
+
+.progress-line.loading-shown {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
+
 .progress-line:before {
   background-color: var(--au-dark-blue);
   content: '';
   -webkit-animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
+
 @-webkit-keyframes running-progress {
   0% { margin-left: 0px; margin-right: 100%; }
   50% { margin-left: 25%; margin-right: 0%; }
   100% { margin-left: 100%; margin-right: 0; }
 }
+
 @keyframes running-progress {
   0% { margin-left: 0px; margin-right: 100%; }
   50% { margin-left: 25%; margin-right: 0%; }
@@ -39,9 +48,14 @@
 }
 
 .au-search-form-fields {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   background: var(--au-dark-blue);
   padding: 12px;
 }
@@ -50,9 +64,17 @@
   color: white;
 }
 
+#results-stats-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 ul.livestock-grid {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
   grid-gap: 12px;
   list-style-type: none;
   margin: 0;
@@ -87,7 +109,6 @@ ul.livestock-grid img.livestock-thumbnail {
   height: auto;
   -webkit-transition: -webkit-transform .65s ease-out;
   transition: -webkit-transform .65s ease-out;
-  -o-transition: transform .65s ease-out;
   transition: transform .65s ease-out;
   transition: transform .65s ease-out, -webkit-transform .65s ease-out;
 }
@@ -115,20 +136,21 @@ ul.livestock-grid > li > a:hover {
 
 ul.livestock-grid > li > a:hover img {
   -webkit-transform: scale(1.1);
-      -ms-transform: scale(1.1);
           transform: scale(1.1);
 }
 
 @media only screen and (max-width: 767px) { /* Go to two columns */
   ul.livestock-grid {
-    grid-template-columns: repeat(2, 1fr);
+    -ms-grid-columns: (1fr)[2];
+        grid-template-columns: repeat(2, 1fr);
     grid-gap: 14px;
   }
 }
 
 @media only screen and (max-width: 370px) { /* Go to one column */
   ul.livestock-grid {
-    grid-template-columns: repeat(2, 1fr);
+    -ms-grid-columns: (1fr)[2];
+        grid-template-columns: repeat(2, 1fr);
     grid-gap:20px;
   }
 }

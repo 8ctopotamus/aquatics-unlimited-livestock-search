@@ -1,32 +1,47 @@
 (function() {
   const loading = document.getElementById('loading')
-  const catSelectors = document.getElementsByClassName('catSelector')
   const searchForm = document.getElementById('au-search-form')
-  const resultsList = document.getElementById('au-search-results')
+  const resultsStatsContainer = document.getElementById('results-stats-container')
+  const resultsStats = document.getElementById('results-stats')
+  const resultsList = document.getElementById('au-search-results-grid')
   const initialCats = resultsList.innerHTML
+  const initialCatsSelectors = document.getElementsByClassName('catSelector')
   const resetButton = document.getElementById('reset-au-search-results')
 
   let postsPerPage = 12
   let paged = 0
   let cat = false
+  let catName = ''
 
-  function showLoading() {
-    loading.style.display = 'flex'
+  const showLoading = () => {
+    loading.classList.add('loading-shown')
   }
 
-  function hideLoading() {
-    loading.style.display = 'none'
+  const hideLoading = () => {
+    loading.classList.remove('loading-shown')
   }
 
-  function resetResults() {
+  const showSearchUI = () => {
+    searchForm.style.display = 'block'
+    resultsStatsContainer.style.display = 'flex'
+  }
+
+  const hideSearchIU = () => {
+    searchForm.style.display = 'none'
+    resultsStats.innerHTML = ''
+    resultsStatsContainer.style.display = 'none'
+  }
+
+  const resetResults = () => {
     paged = 0
     cat = false
+    catName = ''
     resultsList.innerHTML = initialCats
-    Object.values(catSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
-    searchForm.style.display = 'none'
+    Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
+    hideSearchIU()
   }
 
-  function renderTemplate(obj) {
+  const renderTemplate = obj => {
     resultsList.innerHTML += `<li>
       <a href="${obj.permalink}">
         <img class="livestock-thumbnail" src="${obj.thumbnail}" alt="${obj.title}" />
@@ -35,36 +50,34 @@
     </li>`
   }
 
-  function renderResults(json) {
-    if (json.data.length > 0) {
-      Object.values(catSelectors).forEach(cat => cat.removeEventListener('click', searchCategory))
-      searchForm.style.display = 'block'
-      resultsList.innerHTML = ''
-      json.data.forEach(obj => renderTemplate(obj))
-    } else {
-      searchForm.style.display = 'block' // to show reset button
-      resultsList.innerHTML = `<li>${json.total} matches found.</li>`
+  const renderResults = json => {
+    const { data, total } = json
+    resultsStats.innerHTML = `<h2>${catName} <small>${total} matches found.</small></h2>`
+    resultsList.innerHTML = ''
+    if (data.length > 0) {
+      Object.values(initialCatsSelectors).forEach(cat => cat.removeEventListener('click', searchCategory))
+      data.forEach(obj => renderTemplate(obj))
     }
+    showSearchUI()
   }
 
-  function renderFields(data) {
-    console.log(data)
-  }
-
-  async function searchFormSubmit(e) {
+  const searchFormSubmit = async (e) => {
     e.preventDefault()
     showLoading()
     console.log('form submit')
     hideLoading()
   }
 
-  async function searchCategory(e) {
+  const searchCategory = async (e) => {
     e.preventDefault()
     showLoading()
     const target = e.target
     const a = target.tagName === 'A' ? target : target.parentNode
     if (a.dataset.catid) {
       cat = a.dataset.catid
+    }
+    if (a.dataset.catname) {
+      catName = a.dataset.catname
     }
     const data = {
       action: 'au_fetch_livestock',
@@ -82,9 +95,9 @@
         body: form_data
       })
       const json = await response.json()
-      renderFields(json.data)
       renderResults(json)
     } catch (err) {
+      alert(`😵 ${err}`)
       throw new Error(err)
     }
     hideLoading()
@@ -92,7 +105,7 @@
 
   searchForm.addEventListener('submit', searchFormSubmit)
   resetButton.addEventListener('click', resetResults)
-  Object.values(catSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
+  Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
 
   hideLoading()
 })()

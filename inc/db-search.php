@@ -1,10 +1,10 @@
 <?php
 
-$placeholderImgUrl = plugins_url('/img/placeholder.jpg',  __DIR__ );
-
 $cat = !empty($_POST['cat']) ? $_POST['cat'] : false;
 $postsPerPage = !empty($_POST['postsPerPage']) ? $_POST['postsPerPage'] : 12;
 $paged = !empty($_POST['paged']) ? $_POST['paged'] : 0;
+
+$placeholderImgUrl = plugins_url('/img/placeholder.jpg',  __DIR__ );
 
 function filterACFFields($key) {
   global $fieldsWeCareAbout;
@@ -18,6 +18,7 @@ $args = array(
   'orderby' => 'title',
   'order' => 'ASC',
 );
+
 if ($cat):
   $args['tax_query'] = array(
     array (
@@ -29,7 +30,10 @@ endif;
 
 $query = new WP_Query( $args );
 
-$results = [];
+$results = [
+  'data' => [],
+  'total' => 0
+];
 
 if ( $query->have_posts() ):
   while ( $query->have_posts() ) : $query->the_post();
