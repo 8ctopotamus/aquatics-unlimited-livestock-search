@@ -54,6 +54,7 @@ endif;
 $query = new WP_Query( $args );
 
 if ( $query->have_posts() ):
+  $results['total'] = $query->found_posts;
   while ( $query->have_posts() ) : $query->the_post();
     $acfFields = array_filter( get_fields( get_the_id() ), 'filterACFFields', ARRAY_FILTER_USE_KEY );
     $attachment_id = get_field('main_photo');
@@ -71,8 +72,6 @@ if ( $query->have_posts() ):
     wp_reset_postdata();
   endwhile;
 endif;
-
-$results['total'] = $query->found_posts;
 
 // log debug WP_Query info in json response
 if ($debug):

@@ -8,12 +8,12 @@
   const initialCatsSelectors = document.getElementsByClassName('catSelector')
   const resetButton = document.getElementById('reset-au-search-results')
   const animationDuraton = 260
+  const debug = false // for devs
 
   let postsPerPage = 12
   let paged = 0
   let cat = false
   let catName = ''
-  let debug = true
 
   const showLoading = () => {
     loading.classList.add('loading-shown')
@@ -69,7 +69,11 @@
         cat.classList.add('fade-out')
       })
       setTimeout(() => {
-        resultsStats.innerHTML = `<h2>${catName} <small>${total} matches found.</small></h2>`
+        let displaying = postsPerPage
+        if (total <= postsPerPage) {
+          displaying = total
+        }
+        resultsStats.innerHTML = `<h2>${catName} <small>Displaying ${displaying} / ${total} matches found.</small></h2>`
         resultsList.innerHTML = ''
         data.forEach(obj => renderThumbnail(obj))
         showSearchUI()
@@ -77,21 +81,7 @@
     }
   }
 
-  const formSubmit = async (e) => {
-    e.preventDefault()
-    showLoading()
-    let form_data = new FormData(searchForm)
-    const data = {
-      action: 'au_fetch_livestock',
-      includeMeta: true,
-      cat,
-      postsPerPage,
-      paged,
-      debug,
-    }
-    for (key in data) {
-      form_data.append(key, data[key])
-    }
+  const fetchLivestock = async form_data => {
     try {
       const response = await fetch(wp_data.ajax_url, {
         method: 'POST',
@@ -107,7 +97,25 @@
     }
   }
 
-  const searchCategory = async (e) => {
+  const formSubmit = e => {
+    e.preventDefault()
+    showLoading()
+    let form_data = new FormData(searchForm)
+    const data = {
+      action: 'au_fetch_livestock',
+      includeMeta: true,
+      cat,
+      postsPerPage,
+      paged,
+      debug,
+    }
+    for (key in data) {
+      form_data.append(key, data[key])
+    }
+    fetchLivestock(form_data)
+  }
+
+  const searchCategory = e => {
     e.preventDefault()
     showLoading()
     const target = e.target
@@ -129,19 +137,7 @@
     for (key in data) {
       form_data.append(key, data[key])
     }
-    try {
-      const response = await fetch(wp_data.ajax_url, {
-        method: 'POST',
-        body: form_data
-      })
-      const json = await response.json()
-      renderResults(json)
-      hideLoading()
-    } catch (err) {
-      hideLoading()
-      alert(`😵 ${err}`)
-      throw new Error(err)
-    }
+    fetchLivestock(form_data)
   }
 
   searchForm.addEventListener('submit', formSubmit)

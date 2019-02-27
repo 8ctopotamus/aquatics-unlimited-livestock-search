@@ -14,6 +14,8 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 $pluginSlug = 'aquatics-unlimited-livestock-search';
 
+$catsArray = array(18, 15, 19, 88, 87, 16, 17);
+
 $fieldsWeCareAbout = [
   'minimum_tank_size',
   'care_level',
@@ -24,8 +26,6 @@ $fieldsWeCareAbout = [
   'reef_compatible',
   'plant_safe'
 ];
-
-$catsArray = array(18, 15, 19, 88, 87, 16, 17);
 
 /*
 ** Set up wp_ajax requests for frontend UI.

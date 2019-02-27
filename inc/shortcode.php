@@ -11,7 +11,6 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
   ));
   wp_enqueue_script($pluginSlug . '-js');
 
-  // show all top level livestock_categories terms
   $args = [
     'taxonomy' => 'livestock_categories',
     'exclude' => array( 104 ),
@@ -21,6 +20,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     'hide_empty' => false,
     'orderby' => 'include',
   ];
+  
   $terms = get_terms( $args );
 
   $html = '<div id="' . $pluginSlug . '">';
@@ -80,9 +80,10 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
         $html .= '</a>';
       $html .= '</li>';
     endforeach;
-    $html .= '</ul>';
 
+    $html .= '</ul>';
   $html .= '</div>';
+
   return $html;
 }
 
