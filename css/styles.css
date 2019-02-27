@@ -4,6 +4,7 @@
   --au-turquiose: #1db5b7;
   --au-turquiose-light: #45d9db;
   --au-turquiose-dark: #00768b;
+  --au-animation-duration: 260ms;
 }
 
 .progress-line, .progress-line:before {
@@ -62,8 +63,11 @@
       justify-content: space-around;
   /* -webkit-box-align: start;
       -ms-flex-align: start; */
-          align-items: stretch;
-  flex-wrap: wrap;
+          -webkit-box-align: stretch;
+              -ms-flex-align: stretch;
+                  align-items: stretch;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 #au-search-form .form-control {
@@ -81,8 +85,6 @@
   border: 1px solid white;
   padding: 4px 6px;
   display: block;
-  /* width: 100%; */
-  /* height: 34px; */
   border: 1px solid #3f98d1;
   border-radius: 18px;
 }
@@ -97,8 +99,92 @@
 
 #results-stats-container {
   display: none;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.rotate-in-3d {
+  -webkit-animation: rotateIn var(--au-animation-duration) ease-in-out;
+          animation: rotateIn var(--au-animation-duration) ease-in-out;
+}
+
+.fade-in {
+  -webkit-animation: fadeIn var(--au-animation-duration) ease-in-out;
+          animation: fadeIn var(--au-animation-duration) ease-in-out;
+}
+
+.fade-out {
+  -webkit-animation: fadeOut var(--au-animation-duration) ease-in-out;
+          animation: fadeOut var(--au-animation-duration) ease-in-out;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(110px);
+            transform: translateY(110px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(110px);
+            transform: translateY(110px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(100px);
+            transform: translateY(100px);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(100px);
+            transform: translateY(100px);
+  }
+}
+
+@-webkit-keyframes rotateIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: rotateX(90deg);
+            transform: rotateX(90deg);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: rotateX(0deg);
+            transform: rotateX(0deg);
+  }
 }
 
 ul.livestock-grid {
@@ -125,7 +211,8 @@ ul.livestock-grid > li > a {
   width: 100%;
   height: 0;
   padding-bottom: 56.25%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   overflow: hidden;
 }
 
@@ -140,6 +227,7 @@ ul.livestock-grid img.livestock-thumbnail {
   height: auto;
   -webkit-transition: -webkit-transform .65s ease-out;
   transition: -webkit-transform .65s ease-out;
+  -o-transition: transform .65s ease-out;
   transition: transform .65s ease-out;
   transition: transform .65s ease-out, -webkit-transform .65s ease-out;
 }
@@ -154,7 +242,8 @@ ul.livestock-grid .livestock-title {
   font-family: sans-serif;
   font-size: 16px;
   padding: 0.3em 5px;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 ul.livestock-grid a .livestock-title {
@@ -162,12 +251,14 @@ ul.livestock-grid a .livestock-title {
 }
 
 ul.livestock-grid > li > a:hover {
-  box-shadow: 0px 0px 12px var(--au-blue-dark);
+  -webkit-box-shadow: 0px 0px 12px var(--au-blue-dark);
+          box-shadow: 0px 0px 12px var(--au-blue-dark);
 }
 
 ul.livestock-grid > li > a:hover img {
   -webkit-transform: scale(1.1);
-          transform: scale(1.1);
+          -ms-transform: scale(1.1);
+      transform: scale(1.1);
 }
 
 @media only screen and (max-width: 767px) { /* Go to two columns */

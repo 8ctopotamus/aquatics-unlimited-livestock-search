@@ -7,12 +7,13 @@
   const initialCats = resultsList.innerHTML
   const initialCatsSelectors = document.getElementsByClassName('catSelector')
   const resetButton = document.getElementById('reset-au-search-results')
+  const animationDuraton = 260
 
   let postsPerPage = 12
   let paged = 0
   let cat = false
   let catName = ''
-  let debug = false
+  let debug = true
 
   const showLoading = () => {
     loading.classList.add('loading-shown')
@@ -24,27 +25,33 @@
 
   const showSearchUI = () => {
     searchForm.style.display = 'block'
+    searchForm.classList.add('rotate-in-3d')
     resultsStatsContainer.style.display = 'flex'
   }
 
   const hideSearchIU = () => {
     searchForm.style.display = 'none'
+    searchForm.classList.remove('rotate-in-3d')
     resultsStats.innerHTML = ''
     resultsStatsContainer.style.display = 'none'
   }
 
-  const resetResults = () => {
+  const reset = () => {
     paged = 0
     cat = false
     catName = ''
     resultsList.innerHTML = initialCats
-    Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
+    Object.values(initialCatsSelectors).forEach(cat => {
+      cat.addEventListener('click', searchCategory)
+      cat.classList.remove('fade-out')
+      cat.classList.add('fade-in')
+    })
     hideSearchIU()
   }
 
   const renderThumbnail = obj => {
     resultsList.innerHTML += `<li>
-      <a href="${obj.permalink}">
+      <a href="${obj.permalink}" class="fade in">
         <img class="livestock-thumbnail" src="${obj.thumbnail}" alt="${obj.title}" />
         <span class="livestock-title">${obj.title}</span>
       </a>
@@ -53,19 +60,24 @@
 
   const renderResults = json => {
     const { data, total, debug } = json
-    resultsStats.innerHTML = `<h2>${catName} <small>${total} matches found.</small></h2>`
-    resultsList.innerHTML = ''
-    if (data.length > 0) {
-      Object.values(initialCatsSelectors).forEach(cat => cat.removeEventListener('click', searchCategory))
-      data.forEach(obj => renderThumbnail(obj))
-    }
     if (debug) {
       console.info('Debug', debug)
     }
-    showSearchUI()
+    if (data.length > 0) {
+      Object.values(initialCatsSelectors).forEach(cat => {
+        cat.removeEventListener('click', searchCategory)
+        cat.classList.add('fade-out')
+      })
+      setTimeout(() => {
+        resultsStats.innerHTML = `<h2>${catName} <small>${total} matches found.</small></h2>`
+        resultsList.innerHTML = ''
+        data.forEach(obj => renderThumbnail(obj))
+        showSearchUI()
+      }, animationDuraton)
+    }
   }
 
-  const searchFormSubmit = async (e) => {
+  const formSubmit = async (e) => {
     e.preventDefault()
     showLoading()
     let form_data = new FormData(searchForm)
@@ -87,11 +99,12 @@
       })
       const json = await response.json()
       renderResults(json)
+      hideLoading()
     } catch (err) {
+      hideLoading()
       alert(`😵 ${err}`)
       throw new Error(err)
     }
-    hideLoading()
   }
 
   const searchCategory = async (e) => {
@@ -123,15 +136,16 @@
       })
       const json = await response.json()
       renderResults(json)
+      hideLoading()
     } catch (err) {
+      hideLoading()
       alert(`😵 ${err}`)
       throw new Error(err)
     }
-    hideLoading()
   }
 
-  searchForm.addEventListener('submit', searchFormSubmit)
-  resetButton.addEventListener('click', resetResults)
+  searchForm.addEventListener('submit', formSubmit)
+  resetButton.addEventListener('click', reset)
   Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
 
   hideLoading()

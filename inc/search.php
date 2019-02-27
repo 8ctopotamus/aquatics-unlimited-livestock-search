@@ -3,8 +3,8 @@
 global $fieldsWeCareAbout;
 
 $cat = !empty($_POST['cat']) ? $_POST['cat'] : false;
-$postsPerPage = !empty($_POST['postsPerPage']) ? intval($_POST['postsPerPage']) : 12;
-$paged = !empty($_POST['paged']) ? intval($_POST['paged']) : 0;
+$postsPerPage = $_POST['postsPerPage'] ? intval($_POST['postsPerPage']) : 12;
+$paged = $_POST['paged'] ? intval($_POST['paged']) : 0;
 $includeMeta = $_POST['includeMeta'] === 'true' ? boolval($_POST['includeMeta']) : false;
 $debug = $_POST['debug'] === 'true' ? boolval($_POST['debug']) : false;
 
@@ -77,8 +77,10 @@ $results['total'] = $query->found_posts;
 // log debug WP_Query info in json response
 if ($debug):
   $results['debug'] = [
-    '$debug' => $debug,
-    'WP_Query' => $args
+    'WP_Query' => [
+      '$query' => $query,
+      '$args' => $args
+    ]
   ];
 endif;
 

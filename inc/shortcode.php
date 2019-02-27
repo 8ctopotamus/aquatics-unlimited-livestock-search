@@ -24,9 +24,6 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
   $terms = get_terms( $args );
 
   $html = '<div id="' . $pluginSlug . '">';
-    // loading
-    $html .= '<div id="loading" class="progress-line"></div>';
-
     // Search UI
     $html .= '<form id="au-search-form">';
       $html .= '<div class="au-search-form-fields-flex">';
@@ -42,6 +39,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
           $html .= '<div class="form-control">';
           $html .= '<label for="' . $name . '">' . $label . '</label>';
           $html .= '<select name="' . $name . '">';
+            $html .= '<option value="" selected>---</option>';
             foreach ($choices as $choice):
               $html .= '<option value="' . $choice . '">' . $choice . '</option>';
             endforeach;
@@ -51,6 +49,9 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
         $html .= '<button type="submit">Search</button>';
       $html .= '</div>';
     $html .= '</form>';
+
+    // loading
+    $html .= '<div id="loading" class="progress-line"></div>';
 
     // Results stats
     $html .= '<div id="results-stats-container">';
@@ -63,7 +64,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
 
     // All categories
     $html .= '<li>';
-      $html .= '<a href="#" data-catname="All Livestock" class="catSelector">';
+      $html .= '<a href="#" data-catname="All Livestock" class="catSelector fade-in">';
         $html .= '<img src="' . plugins_url('/img/all-category.jpg',  __DIR__ ) . '" class="livestock-thumbnail" alt="All Categories" />';
         $html .= '<span class="livestock-title">All Livestock</span>';
       $html .= '</a>';
@@ -73,7 +74,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     foreach ( $terms as $term ):
       $theID = $term->term_id;
       $html .= '<li>';
-        $html .= '<a href="#" class="catSelector" data-catid="' . $theID . '" data-catname="' . $term->name . '">';
+        $html .= '<a href="#" class="catSelector fade-in" data-catid="' . $theID . '" data-catname="' . $term->name . '">';
           $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" class="livestock-thumbnail" alt="' . $term->name . '" />';
           $html .= '<span class="livestock-title">' . $term->name . '</span>';
         $html .= '</a>';
