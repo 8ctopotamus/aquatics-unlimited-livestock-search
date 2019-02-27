@@ -64,7 +64,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
 
     // All categories
     $html .= '<li>';
-      $html .= '<a href="#" data-catname="All Livestock" class="catSelector fade-in">';
+      $html .= '<a href="#" data-catname="All Livestock" class="catSelector">';
         $html .= '<img src="' . plugins_url('/img/all-category.jpg',  __DIR__ ) . '" class="livestock-thumbnail" alt="All Categories" />';
         $html .= '<span class="livestock-title">All Livestock</span>';
       $html .= '</a>';
@@ -74,7 +74,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     foreach ( $terms as $term ):
       $theID = $term->term_id;
       $html .= '<li>';
-        $html .= '<a href="#" class="catSelector fade-in" data-catid="' . $theID . '" data-catname="' . $term->name . '">';
+        $html .= '<a href="#" class="catSelector" data-catid="' . $theID . '" data-catname="' . $term->name . '">';
           $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" class="livestock-thumbnail" alt="' . $term->name . '" />';
           $html .= '<span class="livestock-title">' . $term->name . '</span>';
         $html .= '</a>';

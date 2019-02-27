@@ -7,30 +7,6 @@
   --au-animation-duration: 260ms;
 }
 
-.progress-line, .progress-line:before {
-  height: 6px;
-  width: 100%;
-  margin: 0;
-}
-
-.progress-line {
-  background-color: var(--au-turquiose-dark);
-  display: none;
-}
-
-.progress-line.loading-shown {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.progress-line:before {
-  background-color: var(--au-turquiose-light);
-  content: '';
-  -webkit-animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
 @-webkit-keyframes running-progress {
   0% { margin-left: 0px; margin-right: 100%; }
   50% { margin-left: 25%; margin-right: 0%; }
@@ -41,85 +17,6 @@
   0% { margin-left: 0px; margin-right: 100%; }
   50% { margin-left: 25%; margin-right: 0%; }
   100% { margin-left: 100%; margin-right: 0; }
-}
-
-#aquatics-unlimited-livestock-search {
-  position: relative;
-}
-
-#au-search-form {
-  display: none;
-  margin-bottom: 25px;
-  background: var(--au-blue-dark);
-  padding: 12px;
-  border-radius: 8px;
-}
-
-.au-search-form-fields-flex {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  /* -webkit-box-align: start;
-      -ms-flex-align: start; */
-          -webkit-box-align: stretch;
-              -ms-flex-align: stretch;
-                  align-items: stretch;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
-
-#au-search-form .form-control {
-  margin-right: 18px;
-}
-
-#au-search-form label {
-  color: white;
-  font-size: .8rem;
-}
-
-#au-search-form select {
-  background: #3f98d1;
-  color: white;
-  border: 1px solid white;
-  padding: 4px 6px;
-  display: block;
-  border: 1px solid #3f98d1;
-  border-radius: 18px;
-}
-
-#au-search-form button[type="submit"] {
-  margin-left: auto;
-  background: var(--au-turquiose);
-  color: white;
-  font-size: 1.1rem;
-  min-width: 100px;
-}
-
-#results-stats-container {
-  display: none;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.rotate-in-3d {
-  -webkit-animation: rotateIn var(--au-animation-duration) ease-in-out;
-          animation: rotateIn var(--au-animation-duration) ease-in-out;
-}
-
-.fade-in {
-  -webkit-animation: fadeIn var(--au-animation-duration) ease-in-out;
-          animation: fadeIn var(--au-animation-duration) ease-in-out;
-}
-
-.fade-out {
-  -webkit-animation: fadeOut var(--au-animation-duration) ease-in-out;
-          animation: fadeOut var(--au-animation-duration) ease-in-out;
 }
 
 @-webkit-keyframes fadeIn {
@@ -185,6 +82,116 @@
     -webkit-transform: rotateX(0deg);
             transform: rotateX(0deg);
   }
+}
+
+.progress-line, .progress-line:before {
+  height: 6px;
+  width: 100%;
+  margin: 0;
+}
+
+.progress-line {
+  background-color: var(--au-turquiose-dark);
+  display: none;
+}
+
+.progress-line.loading-shown {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.progress-line:before {
+  background-color: var(--au-turquiose-light);
+  content: '';
+  -webkit-animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+#aquatics-unlimited-livestock-search {
+  position: relative;
+}
+
+#au-search-form {
+  display: none;
+  margin-bottom: 25px;
+  background: var(--au-blue-dark);
+  border: 3px solid var(--au-blue);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.au-search-form-fields-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  /* -webkit-box-align: start;
+      -ms-flex-align: start; */
+          -webkit-box-align: stretch;
+              -ms-flex-align: stretch;
+                  align-items: stretch;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+#au-search-form .form-control {
+  margin-right: 18px;
+}
+
+#au-search-form label {
+  color: white;
+  font-size: .8rem;
+}
+
+#au-search-form select {
+  background: #3f98d1;
+  color: white;
+  border: 1px solid white;
+  padding: 4px 6px;
+  display: block;
+  border: 1px solid #3f98d1;
+  border-radius: 18px;
+}
+
+#au-search-form button[type="submit"] {
+  margin-left: auto;
+  background: var(--au-turquiose);
+  border: 2px solid var(--au-turquiose-light);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+#au-search-form button[type="submit"]:hover {
+  background: var(--au-turquiose-dark);
+}
+
+#results-stats-container {
+  display: none;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.rotate-in-3d {
+  -webkit-animation: rotateIn var(--au-animation-duration) ease-in-out;
+          animation: rotateIn var(--au-animation-duration) ease-in-out;
+}
+
+.fade-in {
+  -webkit-animation: fadeIn var(--au-animation-duration) ease-in-out;
+          animation: fadeIn var(--au-animation-duration) ease-in-out;
+}
+
+.fade-out {
+  -webkit-animation: fadeOut var(--au-animation-duration) ease-in-out;
+          animation: fadeOut var(--au-animation-duration) ease-in-out;
 }
 
 ul.livestock-grid {
