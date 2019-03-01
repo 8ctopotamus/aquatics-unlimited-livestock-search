@@ -69,6 +69,7 @@
           el.style.display = 'none'
         }
       } else {
+        select.children[0].selected = true
         select.disabled = bool
         el.style.display = 'block'
       }

@@ -129,9 +129,9 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     $html .= '<div id="results-stats-container">';
       $html .= '<div id="results-stats"></div>';
       $html .= '<div class="au-results-actions">';
-        $html .= '<button class="au-pagination-button" data-dir="-1">Prev</button>';
+        $html .= '<button class="au-pagination-button" data-dir="-1">&#9668;</button>';
         $html .= '<div id="page-count"></div>';
-        $html .= '<button class="au-pagination-button" data-dir="1">Next</button>';
+        $html .= '<button class="au-pagination-button" data-dir="1">&#9658;</button>';
         $html .= '<button id="reset-au-search-results" type="button">🔄 Reset</button>';
       $html .= '</div>';
     $html .= '</div>';
