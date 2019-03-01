@@ -16,6 +16,7 @@ $results = [
 ];
 
 function filterACFFields($key) {
+  global $fieldsWeCareAbout;
   return in_array( $key, $fieldsWeCareAbout );
 }
 
@@ -73,12 +74,11 @@ if ( $query->have_posts() ):
   endwhile;
 endif;
 
-// log debug WP_Query info in json response
 if ($debug):
   $results['debug'] = [
     'WP_Query' => [
       '$query' => $query,
-      '$args' => $args
+      '$args' => $args,
     ]
   ];
 endif;

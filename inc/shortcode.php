@@ -1,13 +1,83 @@
 <?php
 
+$fieldsWeCareAbout = [
+  'minimum_tank_size',
+  'care_level',
+  'temperament',
+  'diet',
+  'max_size',
+  'placement',
+  'reef_compatible',
+  'plant_safe'
+];
+
+$catsArray = [
+  // marine fish
+  18 => ['exclude' => [
+    'placement',
+    'reef_compatible',
+    'plant_safe',
+    'max_size'
+  ] ],
+  // freshwater fish
+  15 => ['exclude' => [
+    'placement',
+    'reef_compatible',
+    'plant_safe'
+  ] ],
+  // marine invertebrates
+  19  => ['exclude' => [
+    'placement',
+    'plant_safe'
+  ] ],
+  // freshwater invertebrates
+  88  => ['exclude' => [
+    'temperament',
+    'placement',
+    'reef_compatible'
+  ] ],
+  // corals
+  87 => ['exclude' => [
+    'temperament',
+    'diet',
+    'max_size',
+    'reef_compatible',
+    'plant_safe'
+  ] ],
+  // freshwater plants
+  16 => ['exclude' => [
+    'temperament',
+    'diet',
+    'max_size',
+    'reef_compatible',
+    'plant_safe'
+  ] ],
+  // pond fish
+  167 => ['exclude' => [
+    'placement',
+    'reef_compatible',
+    'plant_safe',
+  ] ],
+  // pond plants
+  17 => ['exclude' => [
+    'temperament',
+    'diet',
+    'max_size',
+    'reef_compatible',
+    'plant_safe'
+  ] ]
+];
+
 function aquatics_unlimited_livestock_search_func( $atts ) {
   global $pluginSlug;
   global $fieldsWeCareAbout;
+  global $catsArray;
 
   wp_enqueue_style($pluginSlug . '-css');
   wp_localize_script( $pluginSlug . '-js', 'wp_data', array(
     'ajax_url' => admin_url( 'admin-ajax.php' ),
-    'plugin_slug' => $pluginSlug
+    'plugin_slug' => $pluginSlug,
+    'cats_array' => $catsArray
   ));
   wp_enqueue_script($pluginSlug . '-js');
 
@@ -16,7 +86,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     'exclude' => array( 104 ),
     'parent' => 0,
     'number' => 10,
-    'include' => $catsArray,
+    'include' => array_keys($catsArray),
     'hide_empty' => false,
     'orderby' => 'include',
   ];
@@ -83,7 +153,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
       $html .= '<li>';
         $html .= '<a href="#" class="catSelector" data-catid="' . $theID . '" data-catname="' . $term->name . '">';
           $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" class="livestock-thumbnail" alt="' . $term->name . '" />';
-          $html .= '<span class="livestock-title">' . $term->name . '</span>';
+          $html .= '<span class="livestock-title">' . $term->name . ' '.$theID.'</span>';
         $html .= '</a>';
       $html .= '</li>';
     endforeach;

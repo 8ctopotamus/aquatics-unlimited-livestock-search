@@ -11,16 +11,16 @@
   const resetButton = document.getElementById('reset-au-search-results')
   const animationDuraton = 260
 
+  let totalResults = 0
+
   let params = {
     action: 'au_fetch_livestock',
     includeMeta: false,
     cat: false,
     postsPerPage: 12,
     paged: 1,
-    debug: false // for devs
+    debug: true // for devs
   }
-
-  let totalResults = 0
 
   const showLoading = () => {
     loading.classList.add('loading-shown')
@@ -44,10 +44,10 @@
   }
 
   const reset = () => {
+    totalResults = 0
     params.paged = 1
     params.catName = ''
     params.cat = false
-    totalResults = 0
     resultsList.innerHTML = initialCats
     Object.values(initialCatsSelectors).forEach(cat => {
       cat.addEventListener('click', searchCategory)
@@ -68,6 +68,7 @@
 
   const renderResults = json => {
     const { data, total, debug } = json
+    console.log(data)
     totalResults = total
     if (debug) {
       console.info('Debug', debug)
