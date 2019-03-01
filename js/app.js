@@ -1,6 +1,7 @@
 (function() {
   const loading = document.getElementById('loading')
   const searchForm = document.getElementById('au-search-form')
+  const searchFormFields = document.getElementsByClassName('form-control')
   const resultsStatsContainer = document.getElementById('results-stats-container')
   const resultsStats = document.getElementById('results-stats')
   const resultsList = document.getElementById('au-search-results-grid')
@@ -19,7 +20,7 @@
     cat: false,
     postsPerPage: 12,
     paged: 1,
-    debug: true // for devs
+    debug: false // for devs
   }
 
   const showLoading = () => {
@@ -49,12 +50,29 @@
     params.catName = ''
     params.cat = false
     resultsList.innerHTML = initialCats
+    disableSelects(false)
     Object.values(initialCatsSelectors).forEach(cat => {
       cat.addEventListener('click', searchCategory)
       cat.classList.remove('fade-out')
       cat.classList.add('fade-in')
     })
     hideSearchIU()
+  }
+
+  const disableSelects = bool => {
+    Object.values(searchFormFields).forEach(el => {
+      const select = el.children[1]
+      if (bool) {
+        const excludeFields = wp_data.cats_array[params.cat] || false
+        if (excludeFields && excludeFields.exclude.includes(select.id)) {
+          select.disabled = bool
+          el.style.display = 'none'
+        }
+      } else {
+        select.disabled = bool
+        el.style.display = 'block'
+      }
+    })
   }
 
   const renderThumbnail = obj => {
@@ -68,7 +86,6 @@
 
   const renderResults = json => {
     const { data, total, debug } = json
-    console.log(data)
     totalResults = total
     if (debug) {
       console.info('Debug', debug)
@@ -78,6 +95,7 @@
         cat.removeEventListener('click', searchCategory)
         cat.classList.add('fade-out')
       })
+      disableSelects(true)
       setTimeout(() => {
         resultsStats.innerHTML = `<h2>${params.catName} <small>${totalResults} matches found.</small></h2>`
         pageCount.innerText = `${params.paged}/${Math.floor(totalResults / params.postsPerPage)}`

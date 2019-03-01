@@ -110,7 +110,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
           endif;
           $html .= '<div class="form-control">';
           $html .= '<label for="' . $name . '">' . $label . '</label>';
-          $html .= '<select name="' . $name . '">';
+          $html .= '<select id="' . $name . '" name="' . $name . '">';
             $html .= '<option value="" selected>---</option>';
             foreach ($choices as $choice):
               $html .= '<option value="' . $choice . '">' . $choice . '</option>';
@@ -153,7 +153,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
       $html .= '<li>';
         $html .= '<a href="#" class="catSelector" data-catid="' . $theID . '" data-catname="' . $term->name . '">';
           $html .= '<img src="' . do_shortcode(sprintf("[wp_custom_image_category term_id='%s' size='medium' onlysrc='true']", $theID)) . '" class="livestock-thumbnail" alt="' . $term->name . '" />';
-          $html .= '<span class="livestock-title">' . $term->name . ' '.$theID.'</span>';
+          $html .= '<span class="livestock-title">' . $term->name . '</span>';
         $html .= '</a>';
       $html .= '</li>';
     endforeach;
