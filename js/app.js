@@ -10,22 +10,17 @@
   const initialCatsSelectors = document.getElementsByClassName('catSelector')
   const resetButton = document.getElementById('reset-au-search-results')
   const animationDuraton = 260
-  const debug = false // for devs
 
-  let postsPerPage = 12
-  let paged = 1
-  let totalResults = 0
-  let cat = false
-  let catName = ''
-  
   let params = {
     action: 'au_fetch_livestock',
     includeMeta: false,
-    cat,
-    postsPerPage,
-    paged,
-    debug
+    cat: false,
+    postsPerPage: 12,
+    paged: 1,
+    debug: false // for devs
   }
+
+  let totalResults = 0
 
   const showLoading = () => {
     loading.classList.add('loading-shown')
@@ -49,10 +44,10 @@
   }
 
   const reset = () => {
-    paged = 1
+    params.paged = 1
+    params.catName = ''
+    params.cat = false
     totalResults = 0
-    catName = ''
-    cat = false
     resultsList.innerHTML = initialCats
     Object.values(initialCatsSelectors).forEach(cat => {
       cat.addEventListener('click', searchCategory)
@@ -83,8 +78,8 @@
         cat.classList.add('fade-out')
       })
       setTimeout(() => {
-        resultsStats.innerHTML = `<h2>${catName} <small>${totalResults} matches found.</small></h2>`
-        pageCount.innerText = `${paged}/${Math.floor(totalResults / postsPerPage)}`
+        resultsStats.innerHTML = `<h2>${params.catName} <small>${totalResults} matches found.</small></h2>`
+        pageCount.innerText = `${params.paged}/${Math.floor(totalResults / params.postsPerPage)}`
         resultsList.innerHTML = ''
         data.forEach(obj => renderThumbnail(obj))
         showSearchUI()
@@ -125,10 +120,10 @@
     const target = e.target
     const a = target.tagName === 'A' ? target : target.parentNode
     if (a.dataset.catid) {
-      cat = a.dataset.catid
+      params.cat = a.dataset.catid
     }
     if (a.dataset.catname) {
-      catName = a.dataset.catname
+      params.catName = a.dataset.catname
     }
     params.includeMeta = false
     let form_data = new FormData()
@@ -139,8 +134,8 @@
   }
 
   const goToPage = e => {
-    paged += Number(e.target.dataset.dir)
-    if (paged <= 0 || paged >= totalResults) return
+    params.paged += Number(e.target.dataset.dir)
+    if (params.paged <= 0 || params.paged >= totalResults) return
     searchFormSubmit(e)
   }
 
