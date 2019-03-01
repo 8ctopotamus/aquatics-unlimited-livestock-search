@@ -179,6 +179,18 @@
           align-items: center;
 }
 
+.au-results-actions {
+  display: flex;
+}
+
+.au-results-actions > * {
+  margin-left: 12px;
+}
+
+#reset-au-search-results {
+  margin-left: 24px;
+}
+
 .rotate-in-3d {
   -webkit-animation: rotateIn var(--au-animation-duration) ease-in-out;
           animation: rotateIn var(--au-animation-duration) ease-in-out;

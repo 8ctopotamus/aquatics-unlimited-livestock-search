@@ -4,6 +4,8 @@
   const resultsStatsContainer = document.getElementById('results-stats-container')
   const resultsStats = document.getElementById('results-stats')
   const resultsList = document.getElementById('au-search-results-grid')
+  const pageCount = document.getElementById('page-count')
+  const paginationButtons = document.getElementsByClassName('au-pagination-button')
   const initialCats = resultsList.innerHTML
   const initialCatsSelectors = document.getElementsByClassName('catSelector')
   const resetButton = document.getElementById('reset-au-search-results')
@@ -11,7 +13,8 @@
   const debug = false // for devs
 
   let postsPerPage = 12
-  let paged = 0
+  let paged = 1
+  let totalResults = 0
   let cat = false
   let catName = ''
 
@@ -37,9 +40,10 @@
   }
 
   const reset = () => {
-    paged = 0
-    cat = false
+    paged = 1
+    totalResults = 0
     catName = ''
+    cat = false
     resultsList.innerHTML = initialCats
     Object.values(initialCatsSelectors).forEach(cat => {
       cat.addEventListener('click', searchCategory)
@@ -60,6 +64,7 @@
 
   const renderResults = json => {
     const { data, total, debug } = json
+    totalResults = total
     if (debug) {
       console.info('Debug', debug)
     }
@@ -69,11 +74,8 @@
         cat.classList.add('fade-out')
       })
       setTimeout(() => {
-        let displaying = postsPerPage
-        if (total <= postsPerPage) {
-          displaying = total
-        }
-        resultsStats.innerHTML = `<h2>${catName} <small>Displaying ${displaying} / ${total} matches found.</small></h2>`
+        resultsStats.innerHTML = `<h2>${catName} <small>${totalResults} matches found.</small></h2>`
+        pageCount.innerText = `${paged}/${Math.floor(totalResults / postsPerPage)}`
         resultsList.innerHTML = ''
         data.forEach(obj => renderThumbnail(obj))
         showSearchUI()
@@ -97,20 +99,20 @@
     }
   }
 
-  const formSubmit = e => {
+  const searchFormSubmit = e => {
     e.preventDefault()
     showLoading()
     let form_data = new FormData(searchForm)
-    const data = {
+    const params = {
       action: 'au_fetch_livestock',
       includeMeta: true,
       cat,
       postsPerPage,
       paged,
-      debug,
+      debug
     }
-    for (key in data) {
-      form_data.append(key, data[key])
+    for (key in params) {
+      form_data.append(key, params[key])
     }
     fetchLivestock(form_data)
   }
@@ -126,7 +128,7 @@
     if (a.dataset.catname) {
       catName = a.dataset.catname
     }
-    const data = {
+    const params = {
       action: 'au_fetch_livestock',
       cat,
       postsPerPage,
@@ -134,15 +136,21 @@
       debug
     }
     let form_data = new FormData()
-    for (key in data) {
-      form_data.append(key, data[key])
+    for (key in params) {
+      form_data.append(key, params[key])
     }
     fetchLivestock(form_data)
   }
 
-  searchForm.addEventListener('submit', formSubmit)
-  resetButton.addEventListener('click', reset)
-  Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
+  const goToPage = e => {
+    paged += Number(e.target.dataset.dir)
+    if (paged < 0 || paged > totalResults) return
+    searchFormSubmit(e)
+  }
 
-  hideLoading()
+  Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
+  Object.values(paginationButtons).forEach(el => el.addEventListener('click', goToPage))
+  searchForm.addEventListener('submit', searchFormSubmit)
+  resetButton.addEventListener('click', reset)
+
 })()

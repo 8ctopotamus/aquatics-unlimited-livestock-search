@@ -20,10 +20,12 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     'hide_empty' => false,
     'orderby' => 'include',
   ];
-  
+
   $terms = get_terms( $args );
 
   $html = '<div id="' . $pluginSlug . '">';
+    $html .= '<noscript>The Livestock Search requires JavaScript to be enabled.</noscript>';
+
     // Search UI
     $html .= '<form id="au-search-form">';
       $html .= '<div class="au-search-form-fields-flex">';
@@ -56,7 +58,12 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     // Results stats
     $html .= '<div id="results-stats-container">';
       $html .= '<div id="results-stats"></div>';
-      $html .= '<button id="reset-au-search-results" type="button">🔄 Reset</button>';
+      $html .= '<div class="au-results-actions">';
+        $html .= '<button class="au-pagination-button" data-dir="-1">Prev</button>';
+        $html .= '<div id="page-count"></div>';
+        $html .= '<button class="au-pagination-button" data-dir="1">Next</button>';
+        $html .= '<button id="reset-au-search-results" type="button">🔄 Reset</button>';
+      $html .= '</div>';
     $html .= '</div>';
 
     // Results grid
