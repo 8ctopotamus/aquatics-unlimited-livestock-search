@@ -17,6 +17,15 @@
   let totalResults = 0
   let cat = false
   let catName = ''
+  
+  let params = {
+    action: 'au_fetch_livestock',
+    includeMeta: false,
+    cat,
+    postsPerPage,
+    paged,
+    debug
+  }
 
   const showLoading = () => {
     loading.classList.add('loading-shown')
@@ -103,14 +112,7 @@
     e.preventDefault()
     showLoading()
     let form_data = new FormData(searchForm)
-    const params = {
-      action: 'au_fetch_livestock',
-      includeMeta: true,
-      cat,
-      postsPerPage,
-      paged,
-      debug
-    }
+    params.includeMeta = true
     for (key in params) {
       form_data.append(key, params[key])
     }
@@ -128,13 +130,7 @@
     if (a.dataset.catname) {
       catName = a.dataset.catname
     }
-    const params = {
-      action: 'au_fetch_livestock',
-      cat,
-      postsPerPage,
-      paged,
-      debug
-    }
+    params.includeMeta = false
     let form_data = new FormData()
     for (key in params) {
       form_data.append(key, params[key])
@@ -144,7 +140,7 @@
 
   const goToPage = e => {
     paged += Number(e.target.dataset.dir)
-    if (paged < 0 || paged > totalResults) return
+    if (paged <= 0 || paged >= totalResults) return
     searchFormSubmit(e)
   }
 
