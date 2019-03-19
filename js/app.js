@@ -33,6 +33,7 @@
 
   const showSearchUI = () => {
     searchForm.style.display = 'block'
+    searchForm.scrollIntoView()
     searchForm.classList.add('rotate-in-3d')
     resultsStatsContainer.style.display = 'flex'
   }

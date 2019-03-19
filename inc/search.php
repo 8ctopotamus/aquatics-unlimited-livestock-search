@@ -43,6 +43,7 @@ if ($includeMeta):
   );
   foreach ($fieldsWeCareAbout as $field):
     if ($_POST[$field]):
+      // $compare = $field === 'minimum_tank_size' ? 'LIKE' : '<=';
       $args['meta_query'][] = [
         'key' => $field,
         'value' => $_POST[$field],
