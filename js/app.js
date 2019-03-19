@@ -1,6 +1,7 @@
 (function() {
+  const { ajax_url, cats_array, plugin_slug } = wp_data
   const loading = document.getElementById('loading')
-  const searchForm = document.getElementById('au-search-form')
+  const searchForm = document.getElementById(plugin_slug + '-form')
   const searchFormFields = document.getElementsByClassName('form-control')
   const resultsStatsContainer = document.getElementById('results-stats-container')
   const resultsStats = document.getElementById('results-stats')
@@ -10,6 +11,7 @@
   const initialCats = resultsList.innerHTML
   const initialCatsSelectors = document.getElementsByClassName('catSelector')
   const resetButton = document.getElementById('reset-au-search-results')
+  const localStorageKey = 'au_search_params'
   const animationDuraton = 260
 
   let totalResults = 0
@@ -20,7 +22,7 @@
     cat: false,
     postsPerPage: 12,
     paged: 1,
-    debug: false // for devs
+    debug: true // for devs
   }
 
   const showLoading = () => {
@@ -58,13 +60,16 @@
       cat.classList.add('fade-in')
     })
     hideSearchIU()
+    if (localStorage) {
+      localStorage.removeItem(localStorageKey)
+    }
   }
 
   const disableSelects = bool => {
     Object.values(searchFormFields).forEach(el => {
       const select = el.children[1]
       if (bool) {
-        const excludeFields = wp_data.cats_array[params.cat] || false
+        const excludeFields = cats_array[params.cat] || false
         if (excludeFields && excludeFields.exclude.includes(select.id)) {
           select.disabled = bool
           el.style.display = 'none'
@@ -77,6 +82,15 @@
     })
   }
 
+  const saveSelections = form_data => {
+    if (localStorage) {
+      let object = {}
+      form_data.forEach((value, key) => object[key] = value)
+      const json = JSON.stringify(object)
+      localStorage.setItem(localStorageKey, json)
+    }
+  }
+
   const renderThumbnail = obj => {
     resultsList.innerHTML += `<li>
       <a href="${obj.permalink}" class="fade in">
@@ -87,6 +101,7 @@
   }
 
   const renderResults = json => {
+    console.log(json)
     const { data, total, debug } = json
     totalResults = total
     if (debug) {
@@ -110,7 +125,7 @@
 
   const fetchLivestock = async form_data => {
     try {
-      const response = await fetch(wp_data.ajax_url, {
+      const response = await fetch(ajax_url, {
         method: 'POST',
         body: form_data
       })
@@ -132,6 +147,7 @@
     for (key in params) {
       form_data.append(key, params[key])
     }
+    saveSelections(form_data)
     fetchLivestock(form_data)
   }
 
@@ -164,5 +180,16 @@
   Object.values(paginationButtons).forEach(el => el.addEventListener('click', goToPage))
   searchForm.addEventListener('submit', searchFormSubmit)
   resetButton.addEventListener('click', reset)
+
+  if (localStorage && localStorage.getItem(localStorageKey) !== null) {
+    showLoading()
+    const savedChoices = JSON.parse(localStorage.getItem(localStorageKey))
+    let form_data = new FormData()
+    for ( let key in savedChoices ) {
+      if (savedChoices[key] !== '')
+      form_data.append(key, savedChoices[key])
+    }
+    fetchLivestock(form_data)
+  }
 
 })()

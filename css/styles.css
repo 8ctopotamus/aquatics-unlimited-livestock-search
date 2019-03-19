@@ -112,7 +112,7 @@
   position: relative;
 }
 
-#au-search-form {
+#aquatics-unlimited-livestock-search-form {
   display: none;
   margin-bottom: 25px;
   background: var(--au-blue-dark);
@@ -136,16 +136,16 @@
       flex-wrap: wrap;
 }
 
-#au-search-form .form-control {
+#aquatics-unlimited-livestock-search-form .form-control {
   margin-right: 18px;
 }
 
-#au-search-form label {
+#aquatics-unlimited-livestock-search-form label {
   color: white;
   font-size: .8rem;
 }
 
-#au-search-form select {
+#aquatics-unlimited-livestock-search-form select {
   background: #3f98d1;
   color: white;
   border: 1px solid white;
@@ -155,7 +155,7 @@
   border-radius: 18px;
 }
 
-#au-search-form button[type="submit"] {
+#aquatics-unlimited-livestock-search-form button[type="submit"] {
   margin-left: auto;
   background: var(--au-turquiose);
   border: 2px solid var(--au-turquiose-light);
@@ -165,7 +165,7 @@
   min-width: 100px;
 }
 
-#au-search-form button[type="submit"]:hover {
+#aquatics-unlimited-livestock-search-form button[type="submit"]:hover {
   background: var(--au-turquiose-dark);
 }
 

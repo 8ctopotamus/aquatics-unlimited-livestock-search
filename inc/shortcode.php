@@ -97,7 +97,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     $html .= '<noscript>The Livestock Search requires JavaScript to be enabled.</noscript>';
 
     // Search UI
-    $html .= '<form id="au-search-form">';
+    $html .= '<form id="' . $pluginSlug . '-form">';
       $html .= '<div class="au-search-form-fields-flex">';
         // Render fields from ACF Fields Group (Livestock Single Post, ID: 53)
         $fields = acf_get_fields(53);
