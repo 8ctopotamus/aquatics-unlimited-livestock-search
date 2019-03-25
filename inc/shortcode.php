@@ -118,7 +118,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
           $html .= '</select>';
           $html .= '</div>';
         endforeach;
-        $html .= '<button type="submit">Search</button>';
+        $html .= '<button id="'. $pluginSlug .'-form-submit" type="submit">Search</button>';
       $html .= '</div>';
     $html .= '</form>';
 

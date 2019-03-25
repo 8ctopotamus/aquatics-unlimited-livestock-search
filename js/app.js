@@ -2,6 +2,7 @@
   const { ajax_url, cats_array, plugin_slug } = wp_data
   const loading = document.getElementById('loading')
   const searchForm = document.getElementById(plugin_slug + '-form')
+  const searchFormSubmitButton = document.getElementById(plugin_slug + '-form-submit')
   const searchFormFields = document.getElementsByClassName('form-control')
   const resultsStatsContainer = document.getElementById('results-stats-container')
   const resultsStats = document.getElementById('results-stats')
@@ -182,14 +183,8 @@
   resetButton.addEventListener('click', reset)
 
   if (localStorage && localStorage.getItem(localStorageKey) !== null) {
-    showLoading()
-    const savedChoices = JSON.parse(localStorage.getItem(localStorageKey))
-    let form_data = new FormData()
-    for ( let key in savedChoices ) {
-      if (savedChoices[key] !== '')
-      form_data.append(key, savedChoices[key])
-    }
-    fetchLivestock(form_data)
+    params = JSON.parse(localStorage.getItem(localStorageKey))
+    searchFormSubmitButton.click()
   }
 
 })()

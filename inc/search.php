@@ -44,10 +44,12 @@ if ($includeMeta):
   foreach ($fieldsWeCareAbout as $field):
     if ($_POST[$field]):
       $compare = $field === 'minimum_tank_size' ? '>=' : 'LIKE';
+      $type = $field === 'minimum_tank_size' ? 'NUMERIC' : 'CHAR';
       $args['meta_query'][] = [
         'key' => $field,
         'value' => $_POST[$field],
-        'compare' => $compare
+        'compare' => $compare,
+        'type' => $type
       ];
     endif;
   endforeach;
