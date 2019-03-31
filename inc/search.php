@@ -20,7 +20,7 @@ function filterACFFields($key) {
   return in_array( $key, $fieldsWeCareAbout );
 }
 
-$args = array(
+$search_args = array(
   'post_type' => 'livestock',
   'posts_per_page' => $postsPerPage,
   'paged' => $paged,
@@ -29,7 +29,7 @@ $args = array(
 );
 
 if ($cat):
-  $args['tax_query'] = array(
+  $search_args['tax_query'] = array(
     array (
       'taxonomy' => 'livestock_categories',
       'terms' => $cat,
@@ -38,14 +38,14 @@ if ($cat):
 endif;
 
 if ($includeMeta):
-  $args['meta_query']	= array(
-    'relation'		=> 'AND',
+  $search_args['meta_query'] = array(
+    'relation'=> 'AND',
   );
   foreach ($fieldsWeCareAbout as $field):
     if ($_POST[$field]):
-      $compare = $field === 'minimum_tank_size' ? '>=' : 'LIKE';
+      $compare = $field === 'minimum_tank_size' ? '>=' : '=';
       $type = $field === 'minimum_tank_size' ? 'NUMERIC' : 'CHAR';
-      $args['meta_query'][] = [
+      $search_args['meta_query'][] = [
         'key' => $field,
         'value' => $_POST[$field],
         'compare' => $compare,
@@ -55,7 +55,7 @@ if ($includeMeta):
   endforeach;
 endif;
 
-$query = new WP_Query( $args );
+$query = new WP_Query( $search_args );
 
 if ( $query->have_posts() ):
   $results['total'] = $query->found_posts;
@@ -80,8 +80,8 @@ endif;
 if ($debug):
   $results['debug'] = [
     'WP_Query' => [
+      '$search_args' => $search_args,
       '$query' => $query,
-      '$args' => $args,
     ]
   ];
 endif;

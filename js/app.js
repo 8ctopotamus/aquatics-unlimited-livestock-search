@@ -23,7 +23,7 @@
     cat: false,
     postsPerPage: 12,
     paged: 1,
-    debug: true // for devs
+    debug: false // for devs
   }
 
   const showLoading = () => {
@@ -102,13 +102,13 @@
   }
 
   const renderResults = json => {
-    console.log(json)
     const { data, total, debug } = json
     totalResults = total
     if (debug) {
+      console.info('Results count', data.length)
       console.info('Debug', debug)
     }
-    if (data.length > 0) {
+    else if (data.length > 0) {
       Object.values(initialCatsSelectors).forEach(cat => {
         cat.removeEventListener('click', searchCategory)
         cat.classList.add('fade-out')
@@ -121,6 +121,9 @@
         data.forEach(obj => renderThumbnail(obj))
         showSearchUI()
       }, animationDuraton)
+    } else {
+      resultsStats.innerHTML = `<h2>${params.catName} <small>No matches found.</small></h2>`
+      resultsList.innerHTML = ''
     }
   }
 
@@ -148,7 +151,7 @@
     for (key in params) {
       form_data.append(key, params[key])
     }
-    saveSelections(form_data)
+    // saveSelections(form_data) // TODO: REENEABLE TO SAVE
     fetchLivestock(form_data)
   }
 
