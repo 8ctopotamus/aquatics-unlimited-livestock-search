@@ -108,12 +108,13 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
           if ( !in_array( $name, $fieldsWeCareAbout ) ):
             continue;
           endif;
+          $suffix = $name === 'minimum_tank_size' ? ' gallons' : '';
           $html .= '<div class="form-control">';
           $html .= '<label for="' . $name . '">' . $label . '</label>';
           $html .= '<select id="' . $name . '" name="' . $name . '">';
             $html .= '<option value="" selected>---</option>';
             foreach ($choices as $choice):
-              $html .= '<option value="' . $choice . '">' . $choice . '</option>';
+              $html .= '<option value="' . $choice . '">' . $choice . ' ' . $suffix . '</option>';
             endforeach;
           $html .= '</select>';
           $html .= '</div>';

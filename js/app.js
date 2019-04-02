@@ -105,7 +105,7 @@
     const { data, total, debug } = json
     totalResults = total
     if (debug) {
-      console.info('Results count', data.length)
+      console.info('Results found', data.length)
       console.info('Debug', debug)
     }
     else if (data.length > 0) {
@@ -151,7 +151,7 @@
     for (key in params) {
       form_data.append(key, params[key])
     }
-    // saveSelections(form_data) // TODO: REENEABLE TO SAVE
+    saveSelections(form_data)
     fetchLivestock(form_data)
   }
 
@@ -180,6 +180,7 @@
     searchFormSubmit(e)
   }
 
+  // init
   Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
   Object.values(paginationButtons).forEach(el => el.addEventListener('click', goToPage))
   searchForm.addEventListener('submit', searchFormSubmit)
@@ -187,6 +188,10 @@
 
   if (localStorage && localStorage.getItem(localStorageKey) !== null) {
     params = JSON.parse(localStorage.getItem(localStorageKey))
+    Object.values(searchFormFields).forEach(el => {
+      const select = el.children[1]
+      select.value = params[select.name]
+    })
     searchFormSubmitButton.click()
   }
 
