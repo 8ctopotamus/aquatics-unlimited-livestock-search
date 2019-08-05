@@ -3,7 +3,7 @@
   const loading = document.getElementById('loading')
   const searchForm = document.getElementById(plugin_slug + '-form')
   const searchFormSubmitButton = document.getElementById(plugin_slug + '-form-submit')
-  const searchFormFields = document.getElementsByClassName('form-control')
+  const searchFormSelects = document.getElementsByClassName('au-select')
   const resultsStatsContainer = document.getElementById('results-stats-container')
   const resultsStats = document.getElementById('results-stats')
   const resultsList = document.getElementById('au-search-results-grid')
@@ -81,7 +81,7 @@
   }
 
   const disableSelects = bool => {
-    Object.values(searchFormFields).forEach(el => {
+    Object.values(searchFormSelects).forEach(el => {
       const select = el.children[1]
       if (bool) {
         const excludeFields = cats_array[params.cat] || false
@@ -197,7 +197,7 @@
   // init
   Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
   Object.values(paginationButtons).forEach(el => el.addEventListener('click', goToPage))
-  Object.values(searchFormFields).forEach(el => searchCriteria.push(el.children[1].name))
+  Object.values(searchFormSelects).forEach(el => searchCriteria.push(el.children[1].name))
   searchForm.addEventListener('submit', searchFormSubmit)
   resetButton.addEventListener('click', reset)
 
@@ -213,7 +213,7 @@
 
   if (localStorage && localStorage.getItem(localStorageKey) !== null) {
     params = JSON.parse(localStorage.getItem(localStorageKey))
-    Object.values(searchFormFields).forEach(el => {
+    Object.values(searchFormSelects).forEach(el => {
       const select = el.children[1]
       select.value = params[select.name]
     })

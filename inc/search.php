@@ -26,6 +26,7 @@ $search_args = array(
   'paged' => $paged,
   'orderby' => 'title',
   'order' => 'ASC',
+  's' => $_POST['s']
 );
 
 if ($cat):

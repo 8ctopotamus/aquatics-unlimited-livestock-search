@@ -280,7 +280,7 @@ ul.livestock-grid > li > a:hover img {
       transform: scale(1.1);
 }
 
-@media only screen and (max-width: 767px) { /* Go to two columns */
+@media only screen and (max-width: 800px) { /* Go to two columns */
   .au-search-form-fields-flex {
     flex-direction: column;
   }
@@ -289,6 +289,7 @@ ul.livestock-grid > li > a:hover img {
     margin-bottom: 20px;
   }
 
+  .au-search-form-fields-flex input,
   .au-search-form-fields-flex select {
     width: 100%;
   }

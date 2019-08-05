@@ -99,6 +99,8 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
     // Search UI
     $html .= '<form id="' . $pluginSlug . '-form">';
       $html .= '<div class="au-search-form-fields-flex">';
+        $html .= '<div class="form-control"><label for="s">Keywords search</label><br/>';
+        $html .= '<input type="search" name="s" id="s" /></div>';
         // Render fields from ACF Fields Group (Livestock Single Post, ID: 53)
         $fields = acf_get_fields(53);
         foreach ($fields as $field):
@@ -109,7 +111,7 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
             continue;
           endif;
           $suffix = $name === 'minimum_tank_size' ? ' gallons' : '';
-          $html .= '<div class="form-control">';
+          $html .= '<div class="form-control au-select">';
           $html .= '<label for="' . $name . '">' . $label . '</label>';
           $html .= '<select id="' . $name . '" name="' . $name . '">';
             $html .= '<option value="" selected>---</option>';
