@@ -15,6 +15,17 @@
   const localStorageKey = 'au_search_params'
   const animationDuraton = 260
 
+  // get query params, if supplied
+  const queryParams = new URLSearchParams(window.location.search)
+  let shouldReset = queryParams.get("reset")
+  if (shouldReset) {
+    shouldReset = JSON.parse(shouldReset)
+  }
+  let catId = queryParams.get('catId')
+  if (catId) {
+    catId = JSON.parse(catId)
+  }
+
   let totalResults = 0
 
   let params = {
@@ -25,6 +36,8 @@
     paged: 1,
     debug: false // for devs
   }
+
+  let searchCriteria = []
 
   const showLoading = () => {
     loading.classList.add('loading-shown')
@@ -62,7 +75,8 @@
     })
     hideSearchIU()
     if (localStorage) {
-      localStorage.removeItem(localStorageKey)
+      localStorage.clear()
+      // localStorage.removeItem(localStorageKey)
     }
   }
 
@@ -107,7 +121,7 @@
     if (debug) {
       console.info('Results found', data.length)
       console.info('Debug', debug)
-    }
+    } 
     else if (data.length > 0) {
       Object.values(initialCatsSelectors).forEach(cat => {
         cat.removeEventListener('click', searchCategory)
@@ -183,8 +197,19 @@
   // init
   Object.values(initialCatsSelectors).forEach(cat => cat.addEventListener('click', searchCategory))
   Object.values(paginationButtons).forEach(el => el.addEventListener('click', goToPage))
+  Object.values(searchFormFields).forEach(el => searchCriteria.push(el.children[1].name))
   searchForm.addEventListener('submit', searchFormSubmit)
   resetButton.addEventListener('click', reset)
+
+  if (shouldReset || catId) {
+    reset()
+    if (catId) {
+      Object.values(initialCatsSelectors).forEach(el => {
+        if (el.dataset.catid == catId) 
+          el.click()
+      })
+    }
+  }
 
   if (localStorage && localStorage.getItem(localStorageKey) !== null) {
     params = JSON.parse(localStorage.getItem(localStorageKey))
