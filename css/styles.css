@@ -281,10 +281,21 @@ ul.livestock-grid > li > a:hover img {
 }
 
 @media only screen and (max-width: 767px) { /* Go to two columns */
-  #au-search-form button[type="submit"] {
+  .au-search-form-fields-flex {
+    flex-direction: column;
+  }
+
+  .au-search-form-fields-flex .form-control {
+    margin-bottom: 20px;
+  }
+
+  .au-search-form-fields-flex select {
+    width: 100%;
+  }
+
+  #aquatics-unlimited-livestock-search-form-submit {
     width: 50%;
-    margin-right: auto;
-    margin-top: 33px;
+    margin: auto;
     border-radius: 32px;
   }
 
