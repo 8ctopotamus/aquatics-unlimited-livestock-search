@@ -206,7 +206,7 @@
           animation: fadeOut var(--au-animation-duration) ease-in-out;
 }
 
-ul.livestock-grid {
+.livestock-grid {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (1fr)[3];
@@ -217,14 +217,14 @@ ul.livestock-grid {
   padding: 0;
 }
 
-ul.livestock-grid > li {
+.livestock-grid > li {
   display: block;
   position: relative;
   margin: 0;
   padding: 0;
 }
 
-ul.livestock-grid > li > a {
+.livestock-grid > li > a {
   display: block;
   position: relative;
   width: 100%;
@@ -235,7 +235,7 @@ ul.livestock-grid > li > a {
   overflow: hidden;
 }
 
-ul.livestock-grid img.livestock-thumbnail {
+.livestock-grid img.livestock-thumbnail {
   display: block;
   position: absolute;
   top: 0;
@@ -251,7 +251,7 @@ ul.livestock-grid img.livestock-thumbnail {
   transition: transform .65s ease-out, -webkit-transform .65s ease-out;
 }
 
-ul.livestock-grid .livestock-title {
+.livestock-grid .livestock-title {
   display: block;
   position: absolute;
   width: 100%;
@@ -265,16 +265,16 @@ ul.livestock-grid .livestock-title {
           box-sizing: border-box;
 }
 
-ul.livestock-grid a .livestock-title {
+.livestock-grid a .livestock-title {
   color: #2373a6;
 }
 
-ul.livestock-grid > li > a:hover {
+.livestock-grid > li > a:hover {
   -webkit-box-shadow: 0px 0px 12px var(--au-blue-dark);
           box-shadow: 0px 0px 12px var(--au-blue-dark);
 }
 
-ul.livestock-grid > li > a:hover img {
+.livestock-grid > li > a:hover img {
   -webkit-transform: scale(1.1);
           -ms-transform: scale(1.1);
       transform: scale(1.1);

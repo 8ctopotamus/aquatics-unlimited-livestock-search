@@ -5,7 +5,9 @@
   const searchFormSubmitButton = document.getElementById(plugin_slug + '-form-submit')
   const searchFormSelects = document.getElementsByClassName('au-select')
   const resultsStatsContainer = document.getElementById('results-stats-container')
+  
   const resultsStats = document.getElementById('results-stats')
+
   const resultsList = document.getElementById('au-search-results-grid')
   const pageCount = document.getElementById('page-count')
   const paginationButtons = document.getElementsByClassName('au-pagination-button')
@@ -76,7 +78,6 @@
     hideSearchIU()
     if (localStorage) {
       localStorage.clear()
-      // localStorage.removeItem(localStorageKey)
     }
   }
 
