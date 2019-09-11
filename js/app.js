@@ -19,10 +19,10 @@
 
   // get query params, if supplied
   const queryParams = new URLSearchParams(window.location.search)
-  let shouldReset = queryParams.get("reset")
-  if (shouldReset) {
-    shouldReset = JSON.parse(shouldReset)
-  }
+  
+  let shouldReset = JSON.parse(queryParams.get("reset")) 
+    || document.getElementsByTagName("BODY")[0].classList.contains('home')
+
   let catId = queryParams.get('catId')
   if (catId) {
     catId = JSON.parse(catId)
