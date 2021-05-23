@@ -101,8 +101,9 @@ function aquatics_unlimited_livestock_search_func( $atts ) {
       $html .= '<div class="au-search-form-fields-flex">';
         $html .= '<div class="form-control"><label for="s">Keywords search</label><br/>';
         $html .= '<input type="search" name="s" id="s" /></div>';
-        // Render fields from ACF Fields Group (Livestock Single Post, ID: 53)
-        $fields = acf_get_fields(53);
+        // Render fields from ACF Fields Group (Livestock Single Post, ID: 2575)
+        // $fields = acf_get_fields(53); // localhost
+        $fields = acf_get_fields(2575);
         foreach ($fields as $field):
           $name = $field['name'];
           $label = $field['label'];
