@@ -39,6 +39,9 @@
     debug: false // for devs
   }
 
+  const dataLayer = window.dataLayer || []
+  const excludeFromTracking = ['action', 'includeMeta', 'postsPerPage', 'paged', 'debug']
+
   let searchCriteria = []
 
   const showLoading = () => {
@@ -158,6 +161,18 @@
     }
   }
 
+  const trackSubmission = form_data => {
+    const data = []
+    form_data.forEach((value, key) => {
+      (!!value) && !excludeFromTracking.includes(key) && data.push(`${key}=${value}`)
+      console.log(key, value)
+    })
+    dataLayer.push({
+      eventName: 'livestockSearch',
+      searchCriteria: data.join('|'),
+    })
+  }
+
   const searchFormSubmit = e => {
     e.preventDefault()
     showLoading()
@@ -168,6 +183,7 @@
     }
     saveSelections(form_data)
     fetchLivestock(form_data)
+    trackSubmission(form_data)
   }
 
   const searchCategory = e => {
