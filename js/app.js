@@ -5,9 +5,7 @@
   const searchFormSubmitButton = document.getElementById(plugin_slug + '-form-submit')
   const searchFormSelects = document.getElementsByClassName('au-select')
   const resultsStatsContainer = document.getElementById('results-stats-container')
-  
   const resultsStats = document.getElementById('results-stats')
-
   const resultsList = document.getElementById('au-search-results-grid')
   const pageCount = document.getElementById('page-count')
   const paginationButtons = document.getElementsByClassName('au-pagination-button')
@@ -164,8 +162,7 @@
   const trackSubmission = form_data => {
     const data = []
     form_data.forEach((value, key) => {
-      (!!value) && !excludeFromTracking.includes(key) && data.push(`${key}=${value}`)
-      console.log(key, value)
+      ( !!value && !excludeFromTracking.includes(key) ) && data.push(`${key}=${value}`)
     })
     dataLayer.push({
       eventName: 'livestockSearch',
